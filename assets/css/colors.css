@@ -1,0 +1,42 @@
+/* colors.css - Purple, Black, White Theme */
+
+:root {
+    --purple-primary: #8B5CF6;
+    --purple-dark: #7C3AED;
+    --purple-light: #A78BFA;
+    --black: #000000;
+    --black-light: #1F1F1F;
+    --white: #FFFFFF;
+    --gray: #6B7280;
+    --gray-light: #F3F4F6;
+    
+    --success: #10B981;
+    --warning: #F59E0B;
+    --danger: #EF4444;
+}
+
+body {
+    background: var(--white);
+    color: var(--black);
+    font-family: 'Inter', sans-serif;
+}
+
+.btn-primary {
+    background: var(--purple-primary);
+    color: var(--white);
+    padding: 12px 24px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-primary:hover {
+    background: var(--purple-dark);
+    transform: translateY(-2px);
+}
+
+.btn-secondary {
+    background: var(--black);
+    color: var(--white);
+}

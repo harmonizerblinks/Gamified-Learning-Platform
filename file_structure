@@ -1,0 +1,170 @@
+gamified-learning-platform/
+│
+├── 📁 config/
+│   ├── db.php                          # Database connection
+│   └── settings.php                    # Site settings & constants
+│
+├── 📁 includes/
+│   ├── header.php                      # Common header
+│   ├── footer.php                      # Common footer
+│   ├── navbar.php                      # Navigation menu
+│   ├── sidebar.php                     # Dashboard sidebar
+│   ├── functions.php                   # Helper functions
+│   └── session.php                     # Session management
+│
+├── 📁 assets/
+│   ├── 📁 css/
+│   │   ├── style.css                   # Main styles
+│   │   ├── colors.css                  # Purple/Black/White theme
+│   │   ├── dashboard.css               # Dashboard styles
+│   │   └── admin.css                   # Admin panel styles
+│   │
+│   ├── 📁 js/
+│   │   ├── main.js                     # Main JavaScript
+│   │   ├── quiz.js                     # Quiz functionality
+│   │   └── video-player.js             # Video player
+│   │
+│   ├── 📁 images/
+│   │   ├── logo.png
+│   │   ├── 📁 icons/
+│   │   ├── 📁 badges/
+│   │   └── 📁 subjects/
+│   │
+│   └── 📁 fonts/
+│
+├── 📁 uploads/
+│   ├── 📁 videos/                      # Course videos
+│   ├── 📁 thumbnails/                  # Course thumbnails
+│   ├── 📁 certificates/                # Generated certificates
+│   ├── 📁 avatars/                     # User profile pictures
+│   └── 📁 documents/                   # PDF files
+│
+├── 📁 auth/                            # Authentication pages
+│   ├── login.php
+│   ├── register.php
+│   ├── logout.php
+│   ├── forgot-password.php
+│   ├── reset-password.php
+│   └── verify-email.php
+│
+├── 📁 pages/                           # Public pages
+│   ├── about.php
+│   ├── contact.php
+│   ├── faq.php
+│   ├── how-it-works.php
+│   └── subjects.php
+│
+├── 📁 dashboard/                       # Learner dashboard
+│   ├── index.php                       # Main dashboard
+│   ├── profile.php                     # User profile
+│   ├── settings.php                    # Account settings
+│   ├── my-courses.php                  # Enrolled courses
+│   ├── course-details.php              # Course info
+│   ├── lesson.php                      # Lesson viewer
+│   ├── quiz.php                        # Take quiz
+│   ├── quiz-result.php                 # Quiz results
+│   ├── leaderboard.php                 # Leaderboard
+│   ├── achievements.php                # Badges & achievements
+│   ├── certificates.php                # My certificates
+│   ├── certificate-view.php            # View single certificate
+│   ├── xp-history.php                  # XP log
+│   ├── level-progress.php              # Level info
+│   ├── streak.php                      # Daily streaks
+│   └── notifications.php               # Notifications
+│
+├── 📁 admin/                           # Admin panel
+│   ├── index.php                       # Admin dashboard
+│   ├── analytics.php                   # Analytics & reports
+│   │
+│   ├── 📁 subjects/
+│   │   ├── index.php                   # List subjects
+│   │   ├── add.php                     # Add subject
+│   │   ├── edit.php                    # Edit subject
+│   │   └── delete.php                  # Delete subject
+│   │
+│   ├── 📁 courses/
+│   │   ├── index.php                   # List courses
+│   │   ├── add.php                     # Add course
+│   │   ├── edit.php                    # Edit course
+│   │   └── delete.php                  # Delete course
+│   │
+│   ├── 📁 lessons/
+│   │   ├── index.php                   # List lessons (by course)
+│   │   ├── add.php                     # Add lesson
+│   │   ├── edit.php                    # Edit lesson
+│   │   └── delete.php                  # Delete lesson
+│   │
+│   ├── 📁 quizzes/
+│   │   ├── index.php                   # List quizzes
+│   │   ├── add.php                     # Add quiz
+│   │   ├── edit.php                    # Edit quiz
+│   │   ├── questions.php               # Manage questions
+│   │   ├── add-question.php            # Add question
+│   │   └── delete.php                  # Delete quiz
+│   │
+│   ├── 📁 users/
+│   │   ├── index.php                   # List users
+│   │   ├── view.php                    # View user details
+│   │   ├── edit.php                    # Edit user
+│   │   └── delete.php                  # Delete user
+│   │
+│   ├── 📁 badges/
+│   │   ├── index.php                   # List badges
+│   │   ├── add.php                     # Add badge
+│   │   ├── edit.php                    # Edit badge
+│   │   └── delete.php                  # Delete badge
+│   │
+│   ├── 📁 levels/
+│   │   ├── index.php                   # List levels
+│   │   └── edit.php                    # Edit level
+│   │
+│   ├── 📁 certificates/
+│   │   └── index.php                   # View all certificates
+│   │
+│   └── 📁 reports/
+│       ├── user-progress.php           # User progress report
+│       ├── course-completion.php       # Course completion
+│       ├── quiz-performance.php        # Quiz stats
+│       └── engagement.php              # Engagement metrics
+│
+├── 📁 actions/                         # Form processing scripts
+│   ├── login-process.php               # Process login
+│   ├── register-process.php            # Process registration
+│   ├── update-profile.php              # Update profile
+│   ├── enroll-course.php               # Enroll in course
+│   ├── complete-lesson.php             # Mark lesson complete
+│   ├── submit-quiz.php                 # Submit quiz
+│   ├── upload-avatar.php               # Upload profile picture
+│   └── 📁 admin/                       # Admin action scripts
+│       ├── save-course.php
+│       ├── save-lesson.php
+│       ├── save-quiz.php
+│       └── save-user.php
+│
+├── 📁 ajax/                            # AJAX endpoints
+│   ├── check-streak.php                # Check daily streak
+│   ├── update-progress.php             # Update lesson progress
+│   ├── get-notifications.php           # Fetch notifications
+│   └── leaderboard-data.php            # Get leaderboard
+│
+├── 📁 classes/                         # PHP classes (optional OOP)
+│   ├── Database.php                    # Database class
+│   ├── User.php                        # User operations
+│   ├── Course.php                      # Course operations
+│   ├── Quiz.php                        # Quiz operations
+│   ├── Badge.php                       # Badge system
+│   ├── Certificate.php                 # Certificate generator
+│   └── XP.php                          # XP calculator
+│
+├── 📁 database/
+│   ├── schema.sql                      # Database structure
+│   └── sample-data.sql                 # Sample data
+│
+├── 📁 logs/
+│   ├── error.log
+│   └── activity.log
+│
+├── index.php                           # Homepage (landing page)
+├── .htaccess                           # URL rewriting & security
+├── .gitignore                          # Git ignore
+└── README.md                           # Documentation
