@@ -167,8 +167,8 @@ if ($quiz) {
                                     <span class="text-muted"><?php echo $completed_lessons; ?>/<?php echo $total_lessons; ?> Lessons</span>
                                 </div>
                                 <div class="progress" style="height: 20px;">
-                                    <div class="progress-bar bg-success" role="progressbar" 
-                                         style="width: <?php echo $progress_percentage; ?>%">
+                                    <div class="progress-bar mt-0 mb-0 bg-success" role="progressbar" 
+                                         style="height: 20px; width: <?php echo $progress_percentage; ?>%">
                                         <?php echo round($progress_percentage); ?>%
                                     </div>
                                 </div>
