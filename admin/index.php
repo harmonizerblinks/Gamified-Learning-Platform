@@ -1,6 +1,6 @@
 <?php 
-$page_title = "Admin Dashboard - " . SITE_NAME;
 require_once '../includes/header.php';
+$page_title = "Admin Dashboard - " . SITE_NAME;
 require_login();
 
 // Check if user is admin
