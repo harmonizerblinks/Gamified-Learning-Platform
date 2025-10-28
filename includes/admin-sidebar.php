@@ -14,37 +14,37 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-white" href="/admin/users.php">
+                <a class="nav-link text-white" href="/admin/users/">
                     <i class="fas fa-users me-2"></i> Manage Users
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-white" href="/admin/subjects.php">
+                <a class="nav-link text-white" href="/admin/subjects/">
                     <i class="fas fa-book me-2"></i> Manage Subjects
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-white" href="/admin/courses.php">
+                <a class="nav-link text-white" href="/admin/courses/">
                     <i class="fas fa-graduation-cap me-2"></i> Manage Courses
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-white" href="/admin/lessons.php">
+                <a class="nav-link text-white" href="/admin/lessons/">
                     <i class="fas fa-book-open me-2"></i> Manage Lessons
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-white" href="/admin/quizzes.php">
+                <a class="nav-link text-white" href="/admin/quizzes/">
                     <i class="fas fa-question-circle me-2"></i> Manage Quizzes
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-white" href="/admin/badges.php">
+                <a class="nav-link text-white" href="/admin/badges/">
                     <i class="fas fa-medal me-2"></i> Manage Badges
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-white" href="/admin/reports.php">
+                <a class="nav-link text-white" href="/admin/analytics.php">
                     <i class="fas fa-chart-bar me-2"></i> Reports & Analytics
                 </a>
             </li>
