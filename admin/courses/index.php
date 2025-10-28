@@ -117,10 +117,4 @@ $courses = $stmt->fetchAll();
     </div>
 </div>
 
-<style>
-.bg-purple {
-    background-color: #8B5CF6 !important;
-}
-</style>
-
 <?php require_once '../../includes/footer.php'; ?>

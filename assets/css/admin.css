@@ -1,0 +1,189 @@
+/* admin.css - Admin Panel Theme Styles */
+
+/* Use theme colors from colors.css */
+:root {
+    --purple-primary: #8B5CF6;
+    --purple-dark: #7C3AED;
+    --purple-light: #A78BFA;
+}
+
+/* Purple backgrounds */
+.bg-purple {
+    background-color: var(--purple-primary) !important;
+    color: white !important;
+}
+
+.bg-purple-light {
+    background-color: #EDE9FE !important;
+}
+
+.bg-purple-dark {
+    background-color: var(--purple-dark) !important;
+    color: white !important;
+}
+
+/* Purple text */
+.text-purple {
+    color: var(--purple-primary) !important;
+}
+
+/* Purple borders */
+.border-purple {
+    border-color: var(--purple-primary) !important;
+}
+
+/* Purple buttons */
+.btn-purple {
+    background-color: var(--purple-primary);
+    border-color: var(--purple-primary);
+    color: white;
+}
+
+.btn-purple:hover {
+    background-color: var(--purple-dark);
+    border-color: var(--purple-dark);
+    color: white;
+}
+
+/* Admin sidebar styling */
+#adminSidebar {
+    background-color: #1F1F1F !important;
+}
+
+#adminSidebar .nav-link.active {
+    background-color: var(--purple-primary) !important;
+    color: white !important;
+}
+
+#adminSidebar .nav-link:hover {
+    background-color: rgba(139, 92, 246, 0.1) !important;
+}
+
+/* Card hover effects with purple */
+.card:hover {
+    box-shadow: 0 8px 20px rgba(139, 92, 246, 0.15) !important;
+    transition: all 0.3s ease;
+}
+
+/* Badge purple variant */
+.badge.bg-purple {
+    background-color: var(--purple-primary) !important;
+}
+
+/* Stats cards with purple accent */
+.stat-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(139, 92, 246, 0.2) !important;
+}
+
+/* Progress bars with purple gradient */
+.progress-bar {
+    background: linear-gradient(90deg, var(--purple-primary), var(--purple-light));
+}
+
+/* Form focus states */
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--purple-primary);
+    box-shadow: 0 0 0 0.25rem rgba(139, 92, 246, 0.25);
+}
+
+/* Table hover with purple tint */
+.table-hover tbody tr:hover {
+    background-color: rgba(139, 92, 246, 0.05);
+}
+
+/* Alert variants */
+.alert-purple {
+    background-color: #EDE9FE;
+    border-color: var(--purple-light);
+    color: var(--purple-dark);
+}
+
+/* Course/Subject cards */
+.feature-card:hover {
+    box-shadow: 0 15px 40px rgba(139, 92, 246, 0.2);
+}
+
+/* Tabs with purple active state */
+.nav-tabs .nav-link.active {
+    color: var(--purple-primary);
+    border-bottom-color: var(--purple-primary);
+}
+
+.nav-tabs .nav-link:hover {
+    color: var(--purple-primary);
+}
+
+/* Modal headers with purple */
+.modal-header {
+    border-bottom: 2px solid var(--purple-primary);
+}
+
+/* List group purple hover */
+.list-group-item-action:hover {
+    background-color: rgba(139, 92, 246, 0.05);
+    border-left: 3px solid var(--purple-primary);
+}
+
+/* Dropdown purple hover */
+.dropdown-item:hover {
+    background-color: rgba(139, 92, 246, 0.1);
+    color: var(--purple-primary);
+}
+
+/* Stats icon backgrounds */
+.stat-icon {
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Course difficulty badges with purple */
+.course-difficulty {
+    background-color: var(--purple-primary);
+    color: white;
+}
+
+/* Timeline with purple */
+.timeline-item::before {
+    background-color: var(--purple-primary);
+}
+
+/* Custom purple gradient backgrounds */
+.bg-gradient-purple {
+    background: linear-gradient(135deg, var(--purple-primary) 0%, var(--purple-dark) 100%);
+    color: white;
+}
+
+/* Pagination with purple */
+.pagination .page-link {
+    color: var(--purple-primary);
+}
+
+.pagination .page-item.active .page-link {
+    background-color: var(--purple-primary);
+    border-color: var(--purple-primary);
+}
+
+.pagination .page-link:hover {
+    color: var(--purple-dark);
+    background-color: rgba(139, 92, 246, 0.1);
+}
+
+/* Loading spinner purple */
+.spinner-border-purple {
+    color: var(--purple-primary);
+}
+
+/* Toast notifications with purple */
+.toast-purple {
+    background-color: var(--purple-primary);
+    color: white;
+}
