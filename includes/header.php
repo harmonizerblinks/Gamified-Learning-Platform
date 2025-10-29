@@ -21,6 +21,17 @@ require_once INCLUDES_PATH . 'functions.php';
     <link rel="stylesheet" href="<?php echo ASSETS_URL; ?>css/colors.css">
     <link rel="stylesheet" href="<?php echo ASSETS_URL; ?>css/style.css">
     <link rel="stylesheet" href="<?php echo ASSETS_URL; ?>css/custom.css">
+
+    <!-- Load admin CSS if in admin area -->
+    <?php if(is_admin() && strpos($_SERVER['REQUEST_URI'], '/admin/') !== false): ?>
+    <link rel="stylesheet" href="<?php echo ASSETS_URL; ?>css/admin.css">
+    <?php endif; ?>
+
+    <!-- Load dashboard CSS if in dashboard area -->
+    <?php if(is_logged_in() && strpos($_SERVER['REQUEST_URI'], '/dashboard/') !== false): ?>
+    <link rel="stylesheet" href="<?php echo ASSETS_URL; ?>css/dashboard.css">
+    <?php endif; ?>
+
     <?php if(isset($extra_css)) echo $extra_css; ?>
     
     <!-- Favicon -->
