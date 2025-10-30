@@ -1,11 +1,15 @@
 <?php
-require_once '../../includes/config.php';
-require_once '../../includes/functions.php';
+$page_title = "Add Question - " . SITE_NAME;
+require_once '../../includes/header.php';
+require_login();
 
-// Check if user is logged in and is admin
-if (!is_logged_in() || !is_admin()) {
-    redirect('/admin/login.php');
+// Check if user is admin
+if (!is_admin()) {
+    set_error('Access denied. Admin only.');
+    redirect('/dashboard/');
 }
+
+$user = get_user_data(get_user_id());
 
 $quiz_id = isset($_GET['quiz_id']) ? (int)$_GET['quiz_id'] : 0;
 $errors = [];
