@@ -1,0 +1,459 @@
+/* ====================================
+   Gamified Learning Platform - Dashboard CSS
+   Purple Theme: #8B5CF6
+   ==================================== */
+
+/* Color Variables */
+:root {
+    --purple-primary: #8B5CF6;
+    --purple-dark: #7C3AED;
+    --purple-light: #A78BFA;
+    --purple-lighter: #C4B5FD;
+    --purple-lightest: #EDE9FE;
+}
+
+/* Dashboard Layout */
+.main-content {
+    margin-left: 250px;
+    padding: 2rem;
+    min-height: 100vh;
+    background: #f8f9fa;
+}
+
+@media (max-width: 768px) {
+    .main-content {
+        margin-left: 0;
+        padding: 1rem;
+    }
+}
+
+/* Purple Theme Utilities */
+.bg-purple {
+    background-color: var(--purple-primary) !important;
+}
+
+.text-purple {
+    color: var(--purple-primary) !important;
+}
+
+.border-purple {
+    border-color: var(--purple-primary) !important;
+}
+
+.btn-purple {
+    background-color: var(--purple-primary);
+    border-color: var(--purple-primary);
+    color: white;
+}
+
+.btn-purple:hover {
+    background-color: var(--purple-dark);
+    border-color: var(--purple-dark);
+    color: white;
+}
+
+.btn-outline-purple {
+    color: var(--purple-primary);
+    border-color: var(--purple-primary);
+}
+
+.btn-outline-purple:hover {
+    background-color: var(--purple-primary);
+    border-color: var(--purple-primary);
+    color: white;
+}
+
+/* Dashboard Cards */
+.dashboard-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: none;
+    border-radius: 0.5rem;
+    overflow: hidden;
+}
+
+.dashboard-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0.5rem 1rem rgba(139, 92, 246, 0.15);
+}
+
+.stat-card {
+    position: relative;
+    overflow: hidden;
+}
+
+.stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100px;
+    height: 100px;
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), transparent);
+    border-radius: 0 0 0 100%;
+}
+
+/* Progress Bars */
+.progress {
+    border-radius: 0.5rem;
+    background-color: #e9ecef;
+}
+
+.progress-bar {
+    border-radius: 0.5rem;
+    transition: width 0.6s ease;
+}
+
+.progress-bar.bg-purple {
+    background: linear-gradient(90deg, var(--purple-primary), var(--purple-light));
+}
+
+/* Badges */
+.badge {
+    padding: 0.35em 0.65em;
+    font-weight: 500;
+}
+
+.badge.bg-purple {
+    background-color: var(--purple-primary) !important;
+}
+
+/* Tables */
+.table-hover tbody tr {
+    transition: background-color 0.2s ease;
+}
+
+.table-hover tbody tr:hover {
+    background-color: var(--purple-lightest);
+}
+
+/* Cards with Icons */
+.icon-card {
+    position: relative;
+    padding: 1.5rem;
+}
+
+.icon-card i {
+    opacity: 0.8;
+    transition: all 0.3s ease;
+}
+
+.icon-card:hover i {
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+/* Level Progress */
+.level-badge {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    background: linear-gradient(135deg, var(--purple-primary), var(--purple-dark));
+    color: white;
+    box-shadow: 0 4px 8px rgba(139, 92, 246, 0.3);
+}
+
+/* XP Display */
+.xp-badge {
+    background: linear-gradient(135deg, #fbbf24, #f59e0b);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 2rem;
+    font-weight: bold;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    box-shadow: 0 2px 8px rgba(251, 191, 36, 0.3);
+}
+
+/* Streak Display */
+.streak-counter {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    color: white;
+    padding: 1rem;
+    border-radius: 1rem;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+.streak-counter .streak-number {
+    font-size: 3rem;
+    font-weight: bold;
+    line-height: 1;
+}
+
+/* Achievement Cards */
+.achievement-card {
+    border: 2px solid #e5e7eb;
+    border-radius: 1rem;
+    padding: 1rem;
+    text-align: center;
+    transition: all 0.3s ease;
+    background: white;
+}
+
+.achievement-card:hover {
+    border-color: var(--purple-primary);
+    transform: scale(1.05);
+    box-shadow: 0 8px 16px rgba(139, 92, 246, 0.2);
+}
+
+.achievement-card.locked {
+    opacity: 0.5;
+    filter: grayscale(100%);
+}
+
+.achievement-card.unlocked {
+    border-color: #fbbf24;
+    background: linear-gradient(135deg, #fef3c7, #fef9e7);
+}
+
+/* Course Cards */
+.course-card {
+    border-radius: 1rem;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    border: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.course-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 8px 24px rgba(139, 92, 246, 0.2);
+}
+
+.course-card-header {
+    background: linear-gradient(135deg, var(--purple-primary), var(--purple-dark));
+    color: white;
+    padding: 1.5rem;
+}
+
+/* Quiz Card */
+.quiz-card {
+    border-left: 4px solid var(--purple-primary);
+    transition: all 0.3s ease;
+}
+
+.quiz-card:hover {
+    border-left-width: 8px;
+    padding-left: calc(1.25rem - 4px);
+}
+
+/* Leaderboard */
+.leaderboard-item {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    margin-bottom: 0.5rem;
+    background: white;
+    border: 1px solid #e5e7eb;
+    transition: all 0.3s ease;
+}
+
+.leaderboard-item:hover {
+    background: var(--purple-lightest);
+    border-color: var(--purple-primary);
+}
+
+.leaderboard-item .rank {
+    font-size: 1.5rem;
+    font-weight: bold;
+    width: 50px;
+    text-align: center;
+    color: var(--purple-primary);
+}
+
+.leaderboard-item.rank-1 {
+    background: linear-gradient(135deg, #fef3c7, #fef9e7);
+    border-color: #fbbf24;
+}
+
+.leaderboard-item.rank-1 .rank {
+    color: #f59e0b;
+}
+
+/* Activity Feed */
+.activity-item {
+    position: relative;
+    padding-left: 2rem;
+    padding-bottom: 1.5rem;
+}
+
+.activity-item::before {
+    content: '';
+    position: absolute;
+    left: 8px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: #e5e7eb;
+}
+
+.activity-item:last-child::before {
+    display: none;
+}
+
+.activity-item .activity-icon {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--purple-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 0.6rem;
+}
+
+/* Dashboard Stats Grid */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+/* Notification Badge */
+.notification-badge {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: #ef4444;
+    color: white;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: bold;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Certificate Display */
+.certificate-preview {
+    border: 3px solid var(--purple-primary);
+    border-radius: 0.5rem;
+    padding: 2rem;
+    background: linear-gradient(135deg, #ffffff, #f8f9fa);
+    box-shadow: 0 4px 12px rgba(139, 92, 246, 0.2);
+}
+
+/* Loading Spinner */
+.spinner-purple {
+    border: 3px solid var(--purple-lightest);
+    border-top-color: var(--purple-primary);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Responsive Utilities */
+@media (max-width: 576px) {
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .level-badge {
+        width: 60px;
+        height: 60px;
+        font-size: 1.25rem;
+    }
+    
+    .streak-counter .streak-number {
+        font-size: 2rem;
+    }
+}
+
+/* Dark Mode Support (Optional) */
+@media (prefers-color-scheme: dark) {
+    .main-content {
+        background: #1f2937;
+        color: #f3f4f6;
+    }
+    
+    .card {
+        background: #374151;
+        color: #f3f4f6;
+    }
+    
+    .table {
+        color: #f3f4f6;
+    }
+    
+    .table-hover tbody tr:hover {
+        background-color: rgba(139, 92, 246, 0.2);
+    }
+}
+
+/* Print Styles */
+@media print {
+    .main-content {
+        margin-left: 0;
+    }
+    
+    .sidebar,
+    .btn,
+    .navbar {
+        display: none !important;
+    }
+}
+
+/* Accessibility */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
+
+/* Focus States */
+.btn:focus,
+.form-control:focus,
+.form-select:focus {
+    outline: 2px solid var(--purple-primary);
+    outline-offset: 2px;
+}
+
+/* Smooth Scrolling */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--purple-primary);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--purple-dark);
+}
