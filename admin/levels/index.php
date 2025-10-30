@@ -28,8 +28,8 @@ $levels = $stmt->fetchAll();
 // include '../../includes/admin-sidebar.php';
 ?>
 
-<div class="main-content">
-    <div class="container-fluid">
+<!-- <div class="main-content">
+    <div class="container-fluid"> -->
 
 
 <div class="main-content">
@@ -202,4 +202,4 @@ $levels = $stmt->fetchAll();
     </div>
 </div>
 
-<?php include '../../includes/footer.php'; ?>
+<?php include '../../includes/admin-footer.php'; ?>

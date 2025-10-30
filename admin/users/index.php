@@ -71,9 +71,11 @@ $stats = $conn->query($stats_query)->fetch();
 <div class="main-content">
     <div class="container-fluid">
         <div class="row">
+            
+            <!-- Sidebar -->
+            <?php include '../../includes/admin-sidebar.php'; ?>
+
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
-                <!-- Sidebar -->
-                <?php include '../../includes/admin-sidebar.php'; ?>
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h2><i class="fas fa-users me-2"></i>Manage Users</h2>
                 </div>
@@ -165,7 +167,7 @@ $stats = $conn->query($stats_query)->fetch();
                                     <i class="fas fa-search me-1"></i>Search
                                 </button>
                                 <?php if (!empty($search) || $role_filter !== 'all'): ?>
-                                <a href="/admin/users/" class="btn btn-secondary">Clear</a>
+                                <a href="/admin/users/" class="btn btn-secondary sm">Clear</a>
                                 <?php endif; ?>
                             </div>
                         </form>
@@ -309,4 +311,4 @@ $stats = $conn->query($stats_query)->fetch();
     </div>
 </div>
 
-<?php include '../../includes/footer.php'; ?>
+<?php include '../../includes/admin-footer.php'; ?>

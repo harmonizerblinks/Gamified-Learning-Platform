@@ -1,9 +1,7 @@
 
 Here is a complete database design for your gamified learning platform:
 🗄️ Database Schema Design
-1. Users & Authentication
-sql
--- Users table
+
 
 CREATE TABLE users (
     user_id INT PRIMARY KEY AUTO_INCREMENT,
@@ -234,32 +232,10 @@ WHERE u.role = 'learner' AND u.is_active = TRUE
 GROUP BY u.user_id
 ORDER BY u.total_xp DESC;
 
-9. Sample Data Inserts
-sql-- Insert levels (1-10)
-INSERT INTO levels (level_number, xp_required, total_xp_required, title, unlocks) VALUES
-(1, 0, 0, 'Beginner', 'Access to beginner courses'),
-(2, 100, 100, 'Novice', 'Intermediate courses'),
-(3, 200, 300, 'Learner', 'First badge milestone'),
-(4, 300, 600, 'Apprentice', 'Advanced quizzes'),
-(5, 500, 1100, 'Scholar', 'Bonus learning materials'),
-(6, 700, 1800, 'Expert', 'Expert-level courses'),
-(7, 1000, 2800, 'Specialist', 'Exclusive challenges'),
-(8, 1500, 4300, 'Master', 'Advanced certificates'),
-(9, 2000, 6300, 'Guru', 'Mastery content'),
-(10, 2700, 9000, 'Legend', 'Certificate of Excellence + Elite status');
 
--- Sample badges
-INSERT INTO badges (badge_name, description, badge_type, requirement, requirement_value, xp_reward) VALUES
-('First Steps', 'Complete your first lesson', 'course', 'Complete 1 lesson', 1, 10),
-('Course Completionist', 'Complete your first course', 'course', 'Complete 1 course', 1, 50),
-('Quiz Master', 'Pass 5 quizzes with 100% score', 'quiz', 'Perfect quiz scores', 5, 100),
-('Week Warrior', 'Maintain a 7-day streak', 'streak', '7-day login streak', 7, 50),
-('Level Up!', 'Reach Level 5', 'level', 'Reach level 5', 5, 100),
-('Triple Threat', 'Complete 3 courses', 'course', 'Complete 3 courses', 3, 150),
-('Elite Learner', 'Reach Level 10', 'level', 'Reach level 10', 10, 500);
-```
 
----
+
+
 
 ## **📊 Key Relationships**
 ```

@@ -420,6 +420,18 @@ INSERT INTO certificates (user_id, course_id, certificate_code, issued_date, cer
 (4, 5, 'CERT-PYTHON-4-20251014', '2025-10-14 15:30:00', 'certificates/mike_python.pdf'),
 (10, 1, 'CERT-HTML-10-20251016', '2025-10-16 14:30:00', 'certificates/david_html_css.pdf');
 
+
+
+
+
+
+
+
+
+
+
+
+
 🎯 Quick Verification Queries
 After inserting all data, run these to verify:
 sql-- Check user levels and XP
