@@ -213,8 +213,8 @@ $page_title = "View User: " . $user_data['username'];
                                                     </td>
                                                     <td>
                                                         <div class="progress" style="height: 20px;">
-                                                            <div class="progress-bar bg-purple" role="progressbar"
-                                                                style="width: <?php echo $course['progress_percentage']; ?>%">
+                                                            <div class="mt-0 mb-0 progress-bar bg-purple" role="progressbar"
+                                                                style="height:20px; width: <?php echo $course['progress_percentage']; ?>%">
                                                                 <?php echo round($course['progress_percentage']); ?>%
                                                             </div>
                                                         </div>
