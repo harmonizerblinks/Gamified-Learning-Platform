@@ -381,7 +381,7 @@ $top_badges = $conn->query("
                                         </strong>
                                     </div>
                                     <div class="progress" style="height: 20px;">
-                                        <div class="progress-bar bg-success" style="width: <?php echo $completion_rate; ?>%"></div>
+                                        <div class="mt-0 mb-0 progress-bar bg-success" style="height:20px; width: <?php echo $completion_rate; ?>%"></div>
                                     </div>
                                 </div>
 

@@ -253,7 +253,7 @@ if ($selected_user_id > 0) {
                                             <td><?php echo htmlspecialchars($progress['subject_name']); ?></td>
                                             <td>
                                                 <div class="progress" style="height: 20px;">
-                                                    <div class="progress-bar bg-purple" style="width: <?php echo $completion; ?>%">
+                                                    <div class="mt-0 mb-0 progress-bar bg-purple" style="height: 20px; width: <?php echo $completion; ?>%">
                                                         <?php echo $completion; ?>%
                                                     </div>
                                                 </div>
