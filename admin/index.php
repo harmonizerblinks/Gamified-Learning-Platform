@@ -381,7 +381,7 @@ $top_badges = $conn->query("
                                         </strong>
                                     </div>
                                     <div class="progress" style="height: 20px;">
-                                        <div class="progress-bar bg-success" style="width: <?php echo $completion_rate; ?>%"></div>
+                                        <div class="mt-0 mb-0 progress-bar bg-success" style="height:20px; width: <?php echo $completion_rate; ?>%"></div>
                                     </div>
                                 </div>
 
@@ -500,7 +500,7 @@ $top_badges = $conn->query("
                                         $max_users = max(array_column($level_distribution, 'user_count'));
                                         $percentage = $max_users > 0 ? ($level['user_count'] / $max_users) * 100 : 0;
                                         ?>
-                                        <div class="progress-bar bg-purple" style="width: <?php echo $percentage; ?>%"></div>
+                                        <div class="mt-0 mb-0 progress-bar bg-purple" style="height:20px; width: <?php echo $percentage; ?>%"></div>
                                     </div>
                                 </div>
                                 <?php endforeach; ?>

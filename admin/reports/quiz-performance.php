@@ -40,7 +40,7 @@ $quiz_stats = $conn->query("
            MAX(uqa.score) as max_score,
            (SELECT COUNT(*) FROM quiz_questions WHERE quiz_id = q.quiz_id) as question_count
     FROM quizzes q
-    INNER JOIN lessons l ON q.lesson_id = l.lesson_id
+    INNER JOIN lessons l ON q.course_id = l.course_id
     INNER JOIN courses c ON l.course_id = c.course_id
     LEFT JOIN user_quiz_attempts uqa ON q.quiz_id = uqa.quiz_id
     GROUP BY q.quiz_id, q.quiz_title, q.passing_score, l.lesson_title, c.course_title
@@ -53,7 +53,7 @@ $recent_attempts = $conn->query("
     FROM user_quiz_attempts uqa
     INNER JOIN quizzes q ON uqa.quiz_id = q.quiz_id
     INNER JOIN users u ON uqa.user_id = u.user_id
-    INNER JOIN lessons l ON q.lesson_id = l.lesson_id
+    INNER JOIN lessons l ON q.course_id = l.course_id
     INNER JOIN courses c ON l.course_id = c.course_id
     ORDER BY uqa.attempt_date DESC
     LIMIT 20
@@ -229,8 +229,8 @@ $top_performers = $conn->query("
                                                 <?php if ($quiz['attempt_count'] > 0): ?>
                                                     <div class="d-flex align-items-center">
                                                         <div class="progress me-2" style="width: 80px; height: 20px;">
-                                                            <div class="progress-bar bg-<?php echo $difficulty_class; ?>" 
-                                                                style="width: <?php echo $quiz_pass_rate; ?>%">
+                                                            <div class="mt-0 mb-0 progress-bar bg-<?php echo $difficulty_class; ?>" 
+                                                                style="height:20px; width: <?php echo $quiz_pass_rate; ?>%">
                                                             </div>
                                                         </div>
                                                         <span class="badge bg-<?php echo $difficulty_class; ?>">

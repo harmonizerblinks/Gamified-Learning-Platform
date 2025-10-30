@@ -207,8 +207,8 @@ $monthly_completions = $conn->query("
                                             <td>
                                                 <div class="d-flex align-items-center">
                                                     <div class="progress me-2" style="width: 100px; height: 20px;">
-                                                        <div class="progress-bar <?php echo $badge_class; ?>" 
-                                                            style="width: <?php echo $course_completion_rate; ?>%">
+                                                        <div class="mt-0 mb-0 progress-bar <?php echo $badge_class; ?>" 
+                                                            style="height:20px; width: <?php echo $course_completion_rate; ?>%">
                                                         </div>
                                                     </div>
                                                     <span class="badge <?php echo $badge_class; ?>">
