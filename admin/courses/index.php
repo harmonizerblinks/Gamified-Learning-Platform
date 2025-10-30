@@ -1,6 +1,6 @@
 <?php
-$page_title = "Manage Courses - " . SITE_NAME;
 require_once '../../includes/header.php';
+$page_title = "Manage Courses - " . SITE_NAME;
 require_login();
 
 // Check if user is admin
@@ -28,6 +28,7 @@ $stmt = $conn->query("
 $courses = $stmt->fetchAll();
 ?>
 
+<div class="main-content">
 <div class="container-fluid">
     <div class="row">
         <!-- Sidebar -->
@@ -116,5 +117,6 @@ $courses = $stmt->fetchAll();
         </main>
     </div>
 </div>
+                                        </div>
 
 <?php require_once '../../includes/footer.php'; ?>
