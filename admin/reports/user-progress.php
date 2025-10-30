@@ -25,7 +25,7 @@ if (!empty($search)) {
     $search_stmt = $conn->prepare("
         SELECT user_id, username, full_name, email, total_xp, current_level, last_login_date
         FROM users
-        WHERE role = 'user' AND (username LIKE ? OR full_name LIKE ? OR email LIKE ?)
+        WHERE role = 'learner' AND (username LIKE ? OR full_name LIKE ? OR email LIKE ?)
         ORDER BY username ASC
         LIMIT 20
     ");
@@ -69,7 +69,7 @@ if ($selected_user_id > 0) {
             SELECT uqa.*, q.quiz_title, l.lesson_title, c.course_title
             FROM user_quiz_attempts uqa
             INNER JOIN quizzes q ON uqa.quiz_id = q.quiz_id
-            INNER JOIN lessons l ON q.lesson_id = l.lesson_id
+            INNER JOIN lessons l ON q.course_id = l.course_id
             INNER JOIN courses c ON l.course_id = c.course_id
             WHERE uqa.user_id = ?
             ORDER BY uqa.attempt_date DESC
