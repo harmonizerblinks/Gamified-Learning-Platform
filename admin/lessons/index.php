@@ -194,4 +194,4 @@ include '../../includes/admin-sidebar.php';
     </div>
 </div>
 
-<?php include '../../includes/footer.php'; ?>
+<?php include '../../includes/admin-footer.php'; ?>
