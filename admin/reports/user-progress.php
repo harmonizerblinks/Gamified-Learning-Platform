@@ -25,7 +25,7 @@ if (!empty($search)) {
     $search_stmt = $conn->prepare("
         SELECT user_id, username, full_name, email, total_xp, current_level, last_login_date
         FROM users
-        WHERE role = 'user' AND (username LIKE ? OR full_name LIKE ? OR email LIKE ?)
+        WHERE role = 'learner' AND (username LIKE ? OR full_name LIKE ? OR email LIKE ?)
         ORDER BY username ASC
         LIMIT 20
     ");
@@ -53,7 +53,7 @@ if ($selected_user_id > 0) {
             SELECT uc.*, c.course_title, s.subject_name,
                    (SELECT COUNT(*) FROM lessons WHERE course_id = c.course_id) as total_lessons,
                    (SELECT COUNT(*) FROM lessons l 
-                    LEFT JOIN user_progress up ON l.lesson_id = up.lesson_id AND up.user_id = uc.user_id
+                    LEFT JOIN user_lesson_progress up ON l.lesson_id = up.lesson_id AND up.user_id = uc.user_id
                     WHERE l.course_id = c.course_id AND up.is_completed = 1) as completed_lessons
             FROM user_courses uc
             INNER JOIN courses c ON uc.course_id = c.course_id
@@ -69,7 +69,7 @@ if ($selected_user_id > 0) {
             SELECT uqa.*, q.quiz_title, l.lesson_title, c.course_title
             FROM user_quiz_attempts uqa
             INNER JOIN quizzes q ON uqa.quiz_id = q.quiz_id
-            INNER JOIN lessons l ON q.lesson_id = l.lesson_id
+            INNER JOIN lessons l ON q.course_id = l.course_id
             INNER JOIN courses c ON l.course_id = c.course_id
             WHERE uqa.user_id = ?
             ORDER BY uqa.attempt_date DESC
@@ -80,7 +80,7 @@ if ($selected_user_id > 0) {
         
         // Get badges earned
         $badges_stmt = $conn->prepare("
-            SELECT ub.*, b.badge_name, b.badge_icon, b.badge_description
+            SELECT ub.*, b.badge_name, b.badge_icon, b.description
             FROM user_badges ub
             INNER JOIN badges b ON ub.badge_id = b.badge_id
             WHERE ub.user_id = ?
@@ -93,7 +93,7 @@ if ($selected_user_id > 0) {
         $xp_stmt = $conn->prepare("
             SELECT * FROM xp_transactions
             WHERE user_id = ?
-            ORDER BY transaction_date DESC
+            ORDER BY created_at DESC
             LIMIT 15
         ");
         $xp_stmt->execute([$selected_user_id]);
