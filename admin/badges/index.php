@@ -42,8 +42,6 @@ $badges = $stmt->fetchAll();
 // include '../../includes/admin-sidebar.php';
 ?>
 
-<!-- <div class="main-content">
-    <div class="container-fluid"> -->
 
 <div class="main-content">
     <div class="container-fluid">

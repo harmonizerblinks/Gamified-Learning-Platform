@@ -1,11 +1,14 @@
-    </div> <!-- Close main-content -->
-</div> <!-- Close container-fluid or main wrapper -->
+    <!-- </div>  -->
+    <!-- Close main-content -->
+<!-- </div>  -->
+<!-- Close container-fluid or main wrapper -->
 
 <!-- Admin Footer -->
 <footer class="admin-footer">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-2"></div>
+            <div class="col-md-4">
                 <p class="mb-0 text-muted small">
                     &copy; <?php echo date('Y'); ?> <?php echo SITE_NAME; ?> Admin Panel. All rights reserved.
                 </p>
