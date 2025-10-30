@@ -60,7 +60,7 @@ include '../includes/header.php';
                         <?php endif; ?>
 
                         <form method="POST">
-                            <div class="mb-3">
+                            <div class="form-group mb-3">
                                 <label for="email" class="form-label">Email Address</label>
                                 <input type="email" class="form-control" id="email" name="email" 
                                        value="<?php echo isset($_POST['email']) ? htmlspecialchars($_POST['email']) : ''; ?>" 
