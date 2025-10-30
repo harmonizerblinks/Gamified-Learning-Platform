@@ -251,6 +251,87 @@ $top_badges = $conn->query("
                     </div>
                 </div>
 
+                <!-- Detailed Reports Section -->
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <h4 class="mb-3"><i class="fas fa-file-chart-line me-2"></i>Detailed Reports</h4>
+                    </div>
+                    <div class="col-md-6 col-lg-3 mb-3">
+                        <a href="/admin/reports/engagement.php" class="text-decoration-none">
+                            <div class="card border-0 shadow-sm h-100 hover-lift">
+                                <div class="card-body text-center">
+                                    <i class="fas fa-chart-line fa-3x text-purple mb-3"></i>
+                                    <h5 class="card-title">User Engagement</h5>
+                                    <p class="card-text small text-muted">
+                                        Active users, engagement metrics, and activity trends
+                                    </p>
+                                    <span class="btn btn-sm btn-outline-purple">View Report <i class="fas fa-arrow-right ms-1"></i></span>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-6 col-lg-3 mb-3">
+                        <a href="/admin/reports/user-progress.php" class="text-decoration-none">
+                            <div class="card border-0 shadow-sm h-100 hover-lift">
+                                <div class="card-body text-center">
+                                    <i class="fas fa-user-chart fa-3x text-info mb-3"></i>
+                                    <h5 class="card-title">User Progress</h5>
+                                    <p class="card-text small text-muted">
+                                        Individual user progress, courses, quizzes, and badges
+                                    </p>
+                                    <span class="btn btn-sm btn-outline-info">View Report <i class="fas fa-arrow-right ms-1"></i></span>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-6 col-lg-3 mb-3">
+                        <a href="/admin/reports/course-completion.php" class="text-decoration-none">
+                            <div class="card border-0 shadow-sm h-100 hover-lift">
+                                <div class="card-body text-center">
+                                    <i class="fas fa-chart-pie fa-3x text-success mb-3"></i>
+                                    <h5 class="card-title">Course Completion</h5>
+                                    <p class="card-text small text-muted">
+                                        Completion rates, trends, and course performance
+                                    </p>
+                                    <span class="btn btn-sm btn-outline-success">View Report <i class="fas fa-arrow-right ms-1"></i></span>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-6 col-lg-3 mb-3">
+                        <a href="/admin/reports/quiz-performance.php" class="text-decoration-none">
+                            <div class="card border-0 shadow-sm h-100 hover-lift">
+                                <div class="card-body text-center">
+                                    <i class="fas fa-question-circle fa-3x text-warning mb-3"></i>
+                                    <h5 class="card-title">Quiz Performance</h5>
+                                    <p class="card-text small text-muted">
+                                        Quiz scores, pass rates, and difficulty analysis
+                                    </p>
+                                    <span class="btn btn-sm btn-outline-warning">View Report <i class="fas fa-arrow-right ms-1"></i></span>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <style>
+                .hover-lift {
+                    transition: transform 0.3s ease, box-shadow 0.3s ease;
+                }
+                .hover-lift:hover {
+                    transform: translateY(-5px);
+                    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+                }
+                .btn-outline-purple {
+                    color: #8B5CF6;
+                    border-color: #8B5CF6;
+                }
+                .btn-outline-purple:hover {
+                    background-color: #8B5CF6;
+                    color: white;
+                }
+                </style>
+
                 <div class="row mb-4">
                     <!-- Quiz Performance -->
                     <div class="col-lg-6 mb-4">
