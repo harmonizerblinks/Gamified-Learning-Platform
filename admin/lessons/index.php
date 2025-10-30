@@ -1,11 +1,15 @@
 <?php
-require_once '../../includes/config.php';
-require_once '../../includes/functions.php';
+$page_title = "Manage Lessons - " . SITE_NAME;
+require_once '../../includes/header.php';
+require_login();
 
-// Check if user is logged in and is admin
-if (!is_logged_in() || !is_admin()) {
-    redirect('/admin/login.php');
+// Check if user is admin
+if (!is_admin()) {
+    set_error('Access denied. Admin only.');
+    redirect('/dashboard/');
 }
+
+$user = get_user_data(get_user_id());
 
 // Get filter parameters
 $course_filter = isset($_GET['course_id']) ? (int)$_GET['course_id'] : 0;
