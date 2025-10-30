@@ -95,131 +95,142 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-$page_title = "Add Question";
-include '../../includes/header.php';
-include '../../includes/admin-sidebar.php';
+// $page_title = "Add Question";
+// include '../../includes/header.php';
+// include '../../includes/admin-sidebar.php';
 ?>
+
 
 <div class="main-content">
     <div class="container-fluid">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <div>
-                <h2><i class="fas fa-plus-circle me-2"></i>Add Question</h2>
-                <p class="text-muted mb-0"><?php echo htmlspecialchars($quiz['quiz_title']); ?></p>
-            </div>
-            <a href="/admin/quizzes/questions.php?id=<?php echo $quiz_id; ?>" class="btn btn-secondary">
-                <i class="fas fa-arrow-left me-2"></i>Back to Questions
-            </a>
-        </div>
-
-        <?php if (!empty($errors)): ?>
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <strong>Error!</strong>
-                <ul class="mb-0">
-                    <?php foreach ($errors as $error): ?>
-                        <li><?php echo htmlspecialchars($error); ?></li>
-                    <?php endforeach; ?>
-                </ul>
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div>
-        <?php endif; ?>
-
         <div class="row">
-            <div class="col-lg-8">
-                <div class="card border-0 shadow-sm">
-                    <div class="card-body">
-                        <form method="POST" id="questionForm">
-                            <!-- Question Text -->
-                            <div class="mb-3">
-                                <label for="question_text" class="form-label">Question Text <span class="text-danger">*</span></label>
-                                <textarea class="form-control" id="question_text" name="question_text" rows="4" required><?php echo isset($_POST['question_text']) ? htmlspecialchars($_POST['question_text']) : ''; ?></textarea>
-                            </div>
+            <!-- Sidebar -->
+            <?php include '../../includes/admin-sidebar.php'; ?>
 
-                            <div class="row">
-                                <!-- Question Type -->
-                                <div class="col-md-6 mb-3">
-                                    <label for="question_type" class="form-label">Question Type <span class="text-danger">*</span></label>
-                                    <select name="question_type" id="question_type" class="form-select" required onchange="updateAnswerFields()">
-                                        <option value="multiple_choice" <?php echo (isset($_POST['question_type']) && $_POST['question_type'] == 'multiple_choice') ? 'selected' : ''; ?>>Multiple Choice</option>
-                                        <option value="true_false" <?php echo (isset($_POST['question_type']) && $_POST['question_type'] == 'true_false') ? 'selected' : ''; ?>>True/False</option>
-                                        <option value="fill_blank" <?php echo (isset($_POST['question_type']) && $_POST['question_type'] == 'fill_blank') ? 'selected' : ''; ?>>Fill in the Blank</option>
-                                    </select>
-                                </div>
+            <!-- Main Content -->
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
 
-                                <!-- Points -->
-                                <div class="col-md-3 mb-3">
-                                    <label for="points" class="form-label">Points <span class="text-danger">*</span></label>
-                                    <input type="number" class="form-control" id="points" name="points"
-                                           value="<?php echo isset($_POST['points']) ? $_POST['points'] : '1'; ?>"
-                                           min="1" required>
-                                </div>
 
-                                <!-- Question Order -->
-                                <div class="col-md-3 mb-3">
-                                    <label for="question_order" class="form-label">Order</label>
-                                    <input type="number" class="form-control" id="question_order" name="question_order"
-                                           value="<?php echo isset($_POST['question_order']) ? $_POST['question_order'] : ($quiz['question_count'] + 1); ?>"
-                                           min="1">
-                                </div>
-                            </div>
-
-                            <!-- Answers Section -->
-                            <div class="mb-3">
-                                <label class="form-label">Answers <span class="text-danger">*</span></label>
-                                <small class="text-muted d-block mb-2">Check the box next to correct answer(s)</small>
-
-                                <div id="answersContainer">
-                                    <!-- Answer fields will be dynamically added here -->
-                                </div>
-
-                                <button type="button" class="btn btn-sm btn-outline-purple mt-2" onclick="addAnswerField()" id="addAnswerBtn">
-                                    <i class="fas fa-plus me-1"></i>Add Answer
-                                </button>
-                            </div>
-
-                            <div class="d-grid gap-2">
-                                <button type="submit" class="btn btn-purple">
-                                    <i class="fas fa-save me-2"></i>Add Question
-                                </button>
-                                <a href="/admin/quizzes/questions.php?id=<?php echo $quiz_id; ?>" class="btn btn-secondary">Cancel</a>
-                            </div>
-                        </form>
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <div>
+                        <h2><i class="fas fa-plus-circle me-2"></i>Add Question</h2>
+                        <p class="text-muted mb-0"><?php echo htmlspecialchars($quiz['quiz_title']); ?></p>
                     </div>
-                </div>
-            </div>
-
-            <div class="col-lg-4">
-                <div class="card border-0 shadow-sm mb-3">
-                    <div class="card-body">
-                        <h5 class="card-title"><i class="fas fa-info-circle me-2"></i>Question Types</h5>
-                        <div class="mb-3">
-                            <h6 class="small fw-bold">Multiple Choice</h6>
-                            <p class="small text-muted mb-0">Students select one or more correct answers from the options</p>
-                        </div>
-                        <div class="mb-3">
-                            <h6 class="small fw-bold">True/False</h6>
-                            <p class="small text-muted mb-0">Students choose between True and False options</p>
-                        </div>
-                        <div>
-                            <h6 class="small fw-bold">Fill in the Blank</h6>
-                            <p class="small text-muted mb-0">Students type the correct answer(s)</p>
-                        </div>
-                    </div>
+                    <a href="/admin/quizzes/questions.php?id=<?php echo $quiz_id; ?>" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left me-2"></i>Back to Questions
+                    </a>
                 </div>
 
-                <div class="card border-0 shadow-sm">
-                    <div class="card-body">
-                        <h5 class="card-title"><i class="fas fa-lightbulb me-2"></i>Tips</h5>
-                        <ul class="small mb-0">
-                            <li>Write clear, unambiguous questions</li>
-                            <li>Provide at least 3-4 answer choices for multiple choice</li>
-                            <li>Make sure correct answers are properly marked</li>
-                            <li>Award more points for difficult questions</li>
-                            <li>Review questions before publishing the quiz</li>
+                <?php if (!empty($errors)): ?>
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>Error!</strong>
+                        <ul class="mb-0">
+                            <?php foreach ($errors as $error): ?>
+                                <li><?php echo htmlspecialchars($error); ?></li>
+                            <?php endforeach; ?>
                         </ul>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                <?php endif; ?>
+
+                <div class="row">
+                    <div class="col-lg-8">
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-body">
+                                <form method="POST" id="questionForm">
+                                    <!-- Question Text -->
+                                    <div class="mb-3">
+                                        <label for="question_text" class="form-label">Question Text <span class="text-danger">*</span></label>
+                                        <textarea class="form-control" id="question_text" name="question_text" rows="4" required><?php echo isset($_POST['question_text']) ? htmlspecialchars($_POST['question_text']) : ''; ?></textarea>
+                                    </div>
+
+                                    <div class="row">
+                                        <!-- Question Type -->
+                                        <div class="col-md-6 mb-3">
+                                            <label for="question_type" class="form-label">Question Type <span class="text-danger">*</span></label>
+                                            <select name="question_type" id="question_type" class="form-select" required onchange="updateAnswerFields()">
+                                                <option value="multiple_choice" <?php echo (isset($_POST['question_type']) && $_POST['question_type'] == 'multiple_choice') ? 'selected' : ''; ?>>Multiple Choice</option>
+                                                <option value="true_false" <?php echo (isset($_POST['question_type']) && $_POST['question_type'] == 'true_false') ? 'selected' : ''; ?>>True/False</option>
+                                                <option value="fill_blank" <?php echo (isset($_POST['question_type']) && $_POST['question_type'] == 'fill_blank') ? 'selected' : ''; ?>>Fill in the Blank</option>
+                                            </select>
+                                        </div>
+
+                                        <!-- Points -->
+                                        <div class="col-md-3 mb-3">
+                                            <label for="points" class="form-label">Points <span class="text-danger">*</span></label>
+                                            <input type="number" class="form-control" id="points" name="points"
+                                                value="<?php echo isset($_POST['points']) ? $_POST['points'] : '1'; ?>"
+                                                min="1" required>
+                                        </div>
+
+                                        <!-- Question Order -->
+                                        <div class="col-md-3 mb-3">
+                                            <label for="question_order" class="form-label">Order</label>
+                                            <input type="number" class="form-control" id="question_order" name="question_order"
+                                                value="<?php echo isset($_POST['question_order']) ? $_POST['question_order'] : ($quiz['question_count'] + 1); ?>"
+                                                min="1">
+                                        </div>
+                                    </div>
+
+                                    <!-- Answers Section -->
+                                    <div class="mb-3">
+                                        <label class="form-label">Answers <span class="text-danger">*</span></label>
+                                        <small class="text-muted d-block mb-2">Check the box next to correct answer(s)</small>
+
+                                        <div id="answersContainer">
+                                            <!-- Answer fields will be dynamically added here -->
+                                        </div>
+
+                                        <button type="button" class="btn btn-sm btn-outline-purple mt-2" onclick="addAnswerField()" id="addAnswerBtn">
+                                            <i class="fas fa-plus me-1"></i>Add Answer
+                                        </button>
+                                    </div>
+
+                                    <div class="d-grid gap-2">
+                                        <button type="submit" class="btn btn-purple">
+                                            <i class="fas fa-save me-2"></i>Add Question
+                                        </button>
+                                        <a href="/admin/quizzes/questions.php?id=<?php echo $quiz_id; ?>" class="btn btn-secondary">Cancel</a>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4">
+                        <div class="card border-0 shadow-sm mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title"><i class="fas fa-info-circle me-2"></i>Question Types</h5>
+                                <div class="mb-3">
+                                    <h6 class="small fw-bold">Multiple Choice</h6>
+                                    <p class="small text-muted mb-0">Students select one or more correct answers from the options</p>
+                                </div>
+                                <div class="mb-3">
+                                    <h6 class="small fw-bold">True/False</h6>
+                                    <p class="small text-muted mb-0">Students choose between True and False options</p>
+                                </div>
+                                <div>
+                                    <h6 class="small fw-bold">Fill in the Blank</h6>
+                                    <p class="small text-muted mb-0">Students type the correct answer(s)</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-body">
+                                <h5 class="card-title"><i class="fas fa-lightbulb me-2"></i>Tips</h5>
+                                <ul class="small mb-0">
+                                    <li>Write clear, unambiguous questions</li>
+                                    <li>Provide at least 3-4 answer choices for multiple choice</li>
+                                    <li>Make sure correct answers are properly marked</li>
+                                    <li>Award more points for difficult questions</li>
+                                    <li>Review questions before publishing the quiz</li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </main>
         </div>
     </div>
 </div>
@@ -287,4 +298,4 @@ document.addEventListener('DOMContentLoaded', function() {
 }
 </style>
 
-<?php include '../../includes/footer.php'; ?>
+<?php include '../../includes/admin-footer.php'; ?>

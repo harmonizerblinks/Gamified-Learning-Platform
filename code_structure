@@ -168,3 +168,10 @@ gamified-learning-platform/
 ├── .htaccess                           # URL rewriting & security
 ├── .gitignore                          # Git ignore
 └── README.md                           # Documentation
+
+
+
+    # <!-- Load dashboard CSS if in dashboard area -->
+    # <?php if(is_logged_in() && strpos($_SERVER['REQUEST_URI'], '/dashboard/') !== false): ?>
+    # <link rel="stylesheet" href="<?php echo ASSETS_URL; ?>css/dashboard.css">
+    # <?php endif; ?>

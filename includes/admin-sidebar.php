@@ -49,10 +49,16 @@
                 </a>
             </li>
             <li class="nav-item">
+                <a class="nav-link text-white" href="/admin/certificates/">
+                    <i class="fas fa-certificate me-2"></i> Manage Certificates
+                </a>
+            </li>
+            
+            <!-- <li class="nav-item">
                 <a class="nav-link text-white" href="/admin/analytics.php">
                     <i class="fas fa-chart-bar me-2"></i> Reports & Analytics
                 </a>
-            </li>
+            </li> -->
             
             <hr class="border-secondary">
             
