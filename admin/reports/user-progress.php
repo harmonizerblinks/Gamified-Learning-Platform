@@ -372,7 +372,7 @@ if ($selected_user_id > 0) {
                                     <tbody>
                                         <?php foreach ($xp_history as $xp): ?>
                                         <tr>
-                                            <td><?php echo date('M d, Y H:i', strtotime($xp['transaction_date'])); ?></td>
+                                            <td><?php echo date('M d, Y H:i', strtotime($xp['created_at'])); ?></td>
                                             <td>
                                                 <span class="badge bg-info">
                                                     <?php echo htmlspecialchars($xp['xp_type']); ?>
