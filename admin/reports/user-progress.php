@@ -253,7 +253,7 @@ if ($selected_user_id > 0) {
                                             <td><?php echo htmlspecialchars($progress['subject_name']); ?></td>
                                             <td>
                                                 <div class="progress" style="height: 20px;">
-                                                    <div class="progress-bar bg-purple" style="width: <?php echo $completion; ?>%">
+                                                    <div class="mt-0 mb-0 progress-bar bg-purple" style="height: 20px; width: <?php echo $completion; ?>%">
                                                         <?php echo $completion; ?>%
                                                     </div>
                                                 </div>
@@ -372,7 +372,7 @@ if ($selected_user_id > 0) {
                                     <tbody>
                                         <?php foreach ($xp_history as $xp): ?>
                                         <tr>
-                                            <td><?php echo date('M d, Y H:i', strtotime($xp['transaction_date'])); ?></td>
+                                            <td><?php echo date('M d, Y H:i', strtotime($xp['created_at'])); ?></td>
                                             <td>
                                                 <span class="badge bg-info">
                                                     <?php echo htmlspecialchars($xp['xp_type']); ?>
