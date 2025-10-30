@@ -2,9 +2,7 @@
 Here is a complete database design for your gamified learning platform:
 🗄️ Database Schema Design
 1. Users & Authentication
-sql
--- Users table
-
+sql-- Users table
 CREATE TABLE users (
     user_id INT PRIMARY KEY AUTO_INCREMENT,
     username VARCHAR(50) UNIQUE NOT NULL,
@@ -23,6 +21,7 @@ CREATE TABLE users (
     is_active BOOLEAN DEFAULT TRUE
 );
 
+-- Levels definition table
 CREATE TABLE levels (
     level_id INT PRIMARY KEY AUTO_INCREMENT,
     level_number INT UNIQUE NOT NULL,
@@ -33,6 +32,8 @@ CREATE TABLE levels (
     unlocks TEXT
 );
 
+2. Courses & Content
+sql-- Subjects table
 CREATE TABLE subjects (
     subject_id INT PRIMARY KEY AUTO_INCREMENT,
     subject_name VARCHAR(100) NOT NULL,
@@ -42,6 +43,7 @@ CREATE TABLE subjects (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Courses table
 CREATE TABLE courses (
     course_id INT PRIMARY KEY AUTO_INCREMENT,
     subject_id INT NOT NULL,
@@ -50,43 +52,47 @@ CREATE TABLE courses (
     difficulty ENUM('beginner', 'intermediate', 'advanced', 'expert') DEFAULT 'beginner',
     required_level INT DEFAULT 1,
     thumbnail VARCHAR(255),
-    estimated_duration INT, 
+    estimated_duration INT, -- in minutes
     xp_reward INT DEFAULT 100,
     is_published BOOLEAN DEFAULT TRUE,
-    created_by INT,
+    created_by INT, -- admin user_id
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (subject_id) REFERENCES subjects(subject_id) ON DELETE CASCADE,
     FOREIGN KEY (created_by) REFERENCES users(user_id) ON DELETE SET NULL
 );
 
+-- Lessons table
 CREATE TABLE lessons (
     lesson_id INT PRIMARY KEY AUTO_INCREMENT,
     course_id INT NOT NULL,
     lesson_title VARCHAR(200) NOT NULL,
     lesson_order INT NOT NULL,
     lesson_type ENUM('video', 'text', 'pdf', 'mixed') DEFAULT 'text',
-    content_url VARCHAR(255),
-    content_text TEXT, 
-    duration INT,
+    content_url VARCHAR(255), -- video or PDF URL
+    content_text TEXT, -- text content
+    duration INT, -- in minutes
     xp_reward INT DEFAULT 10,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (course_id) REFERENCES courses(course_id) ON DELETE CASCADE
 );
 
+3. Quizzes & Assessments
+sql-- Quizzes table
 CREATE TABLE quizzes (
     quiz_id INT PRIMARY KEY AUTO_INCREMENT,
     course_id INT NOT NULL,
     quiz_title VARCHAR(200) NOT NULL,
     description TEXT,
-    passing_score INT DEFAULT 70,
+    passing_score INT DEFAULT 70, -- percentage
     xp_reward INT DEFAULT 30,
-    bonus_xp_perfect INT DEFAULT 20, 
-    time_limit INT, 
+    bonus_xp_perfect INT DEFAULT 20, -- bonus for 100% score
+    time_limit INT, -- in minutes (NULL = no limit)
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (course_id) REFERENCES courses(course_id) ON DELETE CASCADE
 );
 
+-- Quiz questions table
 CREATE TABLE quiz_questions (
     question_id INT PRIMARY KEY AUTO_INCREMENT,
     quiz_id INT NOT NULL,
@@ -98,6 +104,7 @@ CREATE TABLE quiz_questions (
     FOREIGN KEY (quiz_id) REFERENCES quizzes(quiz_id) ON DELETE CASCADE
 );
 
+-- Quiz answers table
 CREATE TABLE quiz_answers (
     answer_id INT PRIMARY KEY AUTO_INCREMENT,
     question_id INT NOT NULL,
@@ -107,6 +114,8 @@ CREATE TABLE quiz_answers (
     FOREIGN KEY (question_id) REFERENCES quiz_questions(question_id) ON DELETE CASCADE
 );
 
+4. User Progress & Enrollment
+sql-- User course enrollment
 CREATE TABLE user_courses (
     enrollment_id INT PRIMARY KEY AUTO_INCREMENT,
     user_id INT NOT NULL,
@@ -120,18 +129,20 @@ CREATE TABLE user_courses (
     UNIQUE KEY unique_enrollment (user_id, course_id)
 );
 
+-- User lesson progress
 CREATE TABLE user_lesson_progress (
     progress_id INT PRIMARY KEY AUTO_INCREMENT,
     user_id INT NOT NULL,
     lesson_id INT NOT NULL,
     is_completed BOOLEAN DEFAULT FALSE,
     completion_date TIMESTAMP NULL,
-    time_spent INT DEFAULT 0,
+    time_spent INT DEFAULT 0, -- in seconds
     FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
     FOREIGN KEY (lesson_id) REFERENCES lessons(lesson_id) ON DELETE CASCADE,
     UNIQUE KEY unique_progress (user_id, lesson_id)
 );
 
+-- User quiz attempts
 CREATE TABLE user_quiz_attempts (
     attempt_id INT PRIMARY KEY AUTO_INCREMENT,
     user_id INT NOT NULL,
@@ -142,33 +153,37 @@ CREATE TABLE user_quiz_attempts (
     passed BOOLEAN DEFAULT FALSE,
     xp_earned INT DEFAULT 0,
     attempt_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    time_taken INT, 
+    time_taken INT, -- in seconds
     FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
     FOREIGN KEY (quiz_id) REFERENCES quizzes(quiz_id) ON DELETE CASCADE
 );
 
+-- User quiz answers (detailed tracking)
 CREATE TABLE user_quiz_answers (
     user_answer_id INT PRIMARY KEY AUTO_INCREMENT,
     attempt_id INT NOT NULL,
     question_id INT NOT NULL,
-    answer_id INT,
+    answer_id INT, -- NULL if not answered
     is_correct BOOLEAN,
     FOREIGN KEY (attempt_id) REFERENCES user_quiz_attempts(attempt_id) ON DELETE CASCADE,
     FOREIGN KEY (question_id) REFERENCES quiz_questions(question_id) ON DELETE CASCADE,
     FOREIGN KEY (answer_id) REFERENCES quiz_answers(answer_id) ON DELETE SET NULL
 );
 
+5. XP & Rewards System
+sql-- XP transactions log
 CREATE TABLE xp_transactions (
     transaction_id INT PRIMARY KEY AUTO_INCREMENT,
     user_id INT NOT NULL,
     xp_amount INT NOT NULL,
     xp_type ENUM('lesson', 'quiz', 'course', 'streak', 'badge', 'bonus') NOT NULL,
-    reference_id INT,
+    reference_id INT, -- lesson_id, quiz_id, or course_id
     description VARCHAR(255),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
 );
 
+-- Daily streaks tracking
 CREATE TABLE daily_streaks (
     streak_id INT PRIMARY KEY AUTO_INCREMENT,
     user_id INT NOT NULL,
@@ -178,19 +193,22 @@ CREATE TABLE daily_streaks (
     UNIQUE KEY unique_daily_login (user_id, login_date)
 );
 
+6. Badges & Achievements
+sql-- Badges definition table
 CREATE TABLE badges (
     badge_id INT PRIMARY KEY AUTO_INCREMENT,
     badge_name VARCHAR(100) NOT NULL,
     description TEXT,
     badge_icon VARCHAR(255),
     badge_type ENUM('course', 'quiz', 'streak', 'level', 'special') NOT NULL,
-    requirement TEXT, 
-    requirement_value INT,
+    requirement TEXT, -- e.g., "Complete 5 courses", "Reach Level 5"
+    requirement_value INT, -- numeric threshold
     xp_reward INT DEFAULT 0,
     is_active BOOLEAN DEFAULT TRUE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- User badges earned
 CREATE TABLE user_badges (
     user_badge_id INT PRIMARY KEY AUTO_INCREMENT,
     user_id INT NOT NULL,
@@ -201,18 +219,22 @@ CREATE TABLE user_badges (
     UNIQUE KEY unique_user_badge (user_id, badge_id)
 );
 
+7. Certificates
+sql-- Certificates table
 CREATE TABLE certificates (
     certificate_id INT PRIMARY KEY AUTO_INCREMENT,
     user_id INT NOT NULL,
     course_id INT NOT NULL,
-    certificate_code VARCHAR(50) UNIQUE NOT NULL,
+    certificate_code VARCHAR(50) UNIQUE NOT NULL, -- unique verification code
     issued_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    certificate_url VARCHAR(255),
+    certificate_url VARCHAR(255), -- PDF or image URL
     FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
     FOREIGN KEY (course_id) REFERENCES courses(course_id) ON DELETE CASCADE,
     UNIQUE KEY unique_certificate (user_id, course_id)
 );
 
+8. Leaderboard (View)
+sql-- Leaderboard view (calculated dynamically)
 CREATE VIEW leaderboard AS
 SELECT 
     u.user_id,
