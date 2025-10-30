@@ -1,7 +1,8 @@
 <?php
-$page_title = "View User - " . SITE_NAME;
 require_once '../../includes/header.php';
 require_login();
+
+$page_title = "View User - " . SITE_NAME;
 
 // Check if user is admin
 if (!is_admin()) {
