@@ -40,10 +40,10 @@ $quiz_stats = $conn->query("
            MAX(uqa.score) as max_score,
            (SELECT COUNT(*) FROM quiz_questions WHERE quiz_id = q.quiz_id) as question_count
     FROM quizzes q
-    INNER JOIN lessons l ON q.course_id = l.course_id
+    INNER JOIN lessons l ON q.lesson_id = l.lesson_id
     INNER JOIN courses c ON l.course_id = c.course_id
     LEFT JOIN user_quiz_attempts uqa ON q.quiz_id = uqa.quiz_id
-    GROUP BY q.quiz_id
+    GROUP BY q.quiz_id, q.quiz_title, q.passing_score, l.lesson_title, c.course_title
     ORDER BY attempt_count DESC
 ")->fetchAll();
 
@@ -53,7 +53,7 @@ $recent_attempts = $conn->query("
     FROM user_quiz_attempts uqa
     INNER JOIN quizzes q ON uqa.quiz_id = q.quiz_id
     INNER JOIN users u ON uqa.user_id = u.user_id
-    INNER JOIN lessons l ON q.course_id = l.course_id
+    INNER JOIN lessons l ON q.lesson_id = l.lesson_id
     INNER JOIN courses c ON l.course_id = c.course_id
     ORDER BY uqa.attempt_date DESC
     LIMIT 20
@@ -68,7 +68,7 @@ $top_performers = $conn->query("
            SUM(uqa.xp_earned) as total_xp
     FROM user_quiz_attempts uqa
     INNER JOIN users u ON uqa.user_id = u.user_id
-    GROUP BY u.user_id
+    GROUP BY u.user_id, u.username, u.full_name
     HAVING quiz_count >= 3
     ORDER BY avg_score DESC, quiz_count DESC
     LIMIT 10

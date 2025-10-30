@@ -34,7 +34,7 @@ $most_active = $conn->prepare("
     LEFT JOIN daily_streaks ds ON u.user_id = ds.user_id
         AND ds.login_date >= ?
     WHERE u.role = 'user'
-    GROUP BY u.user_id
+    GROUP BY u.user_id, u.username, u.full_name, u.total_xp, u.current_level, u.last_login_date
     ORDER BY login_days DESC, u.total_xp DESC
     LIMIT 10
 ");

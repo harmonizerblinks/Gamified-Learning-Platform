@@ -33,13 +33,13 @@ $course_stats = $conn->query("
     SELECT c.course_id, c.course_title, s.subject_name,
            COUNT(DISTINCT uc.user_id) as total_enrollments,
            COUNT(DISTINCT CASE WHEN uc.is_completed = 1 THEN uc.user_id END) as completed_count,
-           AVG(CASE WHEN uc.is_completed = 1 
+           AVG(CASE WHEN uc.is_completed = 1
                THEN DATEDIFF(uc.completion_date, uc.enrollment_date) END) as avg_completion_days,
            (SELECT COUNT(*) FROM lessons WHERE course_id = c.course_id) as lesson_count
     FROM courses c
     INNER JOIN subjects s ON c.subject_id = s.subject_id
     LEFT JOIN user_courses uc ON c.course_id = uc.course_id
-    GROUP BY c.course_id
+    GROUP BY c.course_id, c.course_title, s.subject_name
     ORDER BY total_enrollments DESC
 ")->fetchAll();
 
