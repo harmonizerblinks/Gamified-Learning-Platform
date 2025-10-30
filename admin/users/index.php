@@ -1,5 +1,6 @@
 <?php
 require_once '../../includes/header.php';
+$page_title = "Manage Users - " . SITE_NAME;
 require_login();
 
 $page_title = "Manage Users - " . SITE_NAME;
