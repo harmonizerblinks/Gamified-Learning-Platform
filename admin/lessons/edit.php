@@ -40,6 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $content_text = isset($_POST['content_text']) ? $_POST['content_text'] : '';
     $duration = isset($_POST['duration']) ? (int)$_POST['duration'] : null;
     $xp_reward = isset($_POST['xp_reward']) ? (int)$_POST['xp_reward'] : 10;
+    $external_url = isset($_POST['external_url']) ? clean_input($_POST['external_url']) : '';
 
     // Validation
     if (empty($lesson_title)) {
@@ -48,13 +49,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($course_id <= 0) {
         $errors[] = 'Please select a valid course.';
     }
-    if (!in_array($lesson_type, ['video', 'text', 'pdf', 'mixed'])) {
+    if (!in_array($lesson_type, ['video', 'text', 'pdf', 'mixed', 'external_url'])) {
         $errors[] = 'Invalid lesson type.';
     }
 
-    // Handle file upload for video or PDF
+    // Handle external URL
     $content_url = $lesson['content_url']; // Keep existing URL
-    if (in_array($lesson_type, ['video', 'pdf', 'mixed']) && isset($_FILES['content_file']) && $_FILES['content_file']['error'] === UPLOAD_ERR_OK) {
+    if ($lesson_type === 'external_url') {
+        if (empty($external_url)) {
+            $errors[] = 'External URL is required for external URL lesson type.';
+        } elseif (!filter_var($external_url, FILTER_VALIDATE_URL)) {
+            $errors[] = 'Please enter a valid URL.';
+        } else {
+            $content_url = $external_url;
+        }
+    }
+    // Handle file upload for video or PDF
+    elseif (in_array($lesson_type, ['video', 'pdf', 'mixed']) && isset($_FILES['content_file']) && $_FILES['content_file']['error'] === UPLOAD_ERR_OK) {
         if ($lesson_type === 'video') {
             $uploaded = upload_file($_FILES['content_file'], UPLOAD_PATH . 'videos/', ALLOWED_VIDEO_EXT);
         } else {
@@ -62,8 +73,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         if ($uploaded) {
-            // Delete old file if exists
-            if (!empty($lesson['content_url'])) {
+            // Delete old file if exists (only for uploaded files, not URLs)
+            if (!empty($lesson['content_url']) && $lesson['lesson_type'] != 'external_url') {
                 $old_file_path = UPLOAD_PATH . $lesson['content_url'];
                 if (file_exists($old_file_path)) {
                     unlink($old_file_path);
@@ -181,23 +192,40 @@ $courses = $courses_stmt->fetchAll();
                                         <label for="lesson_type" class="form-label">Lesson Type <span class="text-danger">*</span></label>
                                         <select name="lesson_type" id="lesson_type" class="form-select" required onchange="toggleContentFields()">
                                             <option value="text" <?php echo $lesson['lesson_type'] == 'text' ? 'selected' : ''; ?>>Text</option>
-                                            <option value="video" <?php echo $lesson['lesson_type'] == 'video' ? 'selected' : ''; ?>>Video</option>
+                                            <option value="video" <?php echo $lesson['lesson_type'] == 'video' ? 'selected' : ''; ?>>Video Upload</option>
+                                            <option value="external_url" <?php echo $lesson['lesson_type'] == 'external_url' ? 'selected' : ''; ?>>External Video URL</option>
                                             <option value="pdf" <?php echo $lesson['lesson_type'] == 'pdf' ? 'selected' : ''; ?>>PDF</option>
                                             <option value="mixed" <?php echo $lesson['lesson_type'] == 'mixed' ? 'selected' : ''; ?>>Mixed</option>
                                         </select>
                                     </div>
 
-                                    <!-- Current File Display -->
+                                    <!-- Current File/URL Display -->
                                     <?php if (!empty($lesson['content_url'])): ?>
-                                    <div class="mb-3">
-                                        <label class="form-label">Current File</label>
+                                    <div class="mb-3" id="current-content-display">
+                                        <label class="form-label">Current Content</label>
                                         <div class="alert alert-info mb-2">
-                                            <i class="fas fa-file me-2"></i>
-                                            <strong><?php echo htmlspecialchars(basename($lesson['content_url'])); ?></strong>
-                                            <small class="d-block text-muted">Uploading a new file will replace this one</small>
+                                            <?php if ($lesson['lesson_type'] == 'external_url'): ?>
+                                                <i class="fas fa-link me-2"></i>
+                                                <strong>External URL:</strong> <?php echo htmlspecialchars($lesson['content_url']); ?>
+                                            <?php else: ?>
+                                                <i class="fas fa-file me-2"></i>
+                                                <strong><?php echo htmlspecialchars(basename($lesson['content_url'])); ?></strong>
+                                                <small class="d-block text-muted">Uploading a new file will replace this one</small>
+                                            <?php endif; ?>
                                         </div>
                                     </div>
                                     <?php endif; ?>
+
+                                    <!-- External URL (for external_url) -->
+                                    <div class="mb-3" id="external-url-section" style="display: none;">
+                                        <label for="external_url" class="form-label">External Video URL</label>
+                                        <input type="url" class="form-control" id="external_url" name="external_url"
+                                            value="<?php echo $lesson['lesson_type'] == 'external_url' ? htmlspecialchars($lesson['content_url']) : ''; ?>"
+                                            placeholder="https://www.youtube.com/watch?v=...">
+                                        <small class="text-muted">
+                                            Supports: YouTube, Vimeo, direct video links (.mp4, .webm, .ogg)
+                                        </small>
+                                    </div>
 
                                     <!-- File Upload (for video/pdf/mixed) -->
                                     <div class="mb-3" id="file-upload-section">
@@ -292,13 +320,20 @@ function toggleContentFields() {
     const lessonType = document.getElementById('lesson_type').value;
     const fileSection = document.getElementById('file-upload-section');
     const textSection = document.getElementById('text-content-section');
+    const externalUrlSection = document.getElementById('external-url-section');
+
+    // Reset all sections
+    fileSection.style.display = 'none';
+    textSection.style.display = 'none';
+    externalUrlSection.style.display = 'none';
 
     if (lessonType === 'text') {
-        fileSection.style.display = 'none';
         textSection.style.display = 'block';
     } else if (lessonType === 'video' || lessonType === 'pdf') {
         fileSection.style.display = 'block';
-        textSection.style.display = 'none';
+    } else if (lessonType === 'external_url') {
+        externalUrlSection.style.display = 'block';
+        textSection.style.display = 'block'; // Allow description text
     } else if (lessonType === 'mixed') {
         fileSection.style.display = 'block';
         textSection.style.display = 'block';
