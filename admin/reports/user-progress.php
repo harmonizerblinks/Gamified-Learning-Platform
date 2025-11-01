@@ -53,7 +53,7 @@ if ($selected_user_id > 0) {
             SELECT uc.*, c.course_title, s.subject_name,
                    (SELECT COUNT(*) FROM lessons WHERE course_id = c.course_id) as total_lessons,
                    (SELECT COUNT(*) FROM lessons l 
-                    LEFT JOIN user_progress up ON l.lesson_id = up.lesson_id AND up.user_id = uc.user_id
+                    LEFT JOIN user_lesson_progress up ON l.lesson_id = up.lesson_id AND up.user_id = uc.user_id
                     WHERE l.course_id = c.course_id AND up.is_completed = 1) as completed_lessons
             FROM user_courses uc
             INNER JOIN courses c ON uc.course_id = c.course_id
@@ -80,7 +80,7 @@ if ($selected_user_id > 0) {
         
         // Get badges earned
         $badges_stmt = $conn->prepare("
-            SELECT ub.*, b.badge_name, b.badge_icon, b.badge_description
+            SELECT ub.*, b.badge_name, b.badge_icon, b.description
             FROM user_badges ub
             INNER JOIN badges b ON ub.badge_id = b.badge_id
             WHERE ub.user_id = ?
@@ -93,7 +93,7 @@ if ($selected_user_id > 0) {
         $xp_stmt = $conn->prepare("
             SELECT * FROM xp_transactions
             WHERE user_id = ?
-            ORDER BY transaction_date DESC
+            ORDER BY created_at DESC
             LIMIT 15
         ");
         $xp_stmt->execute([$selected_user_id]);
@@ -253,7 +253,7 @@ if ($selected_user_id > 0) {
                                             <td><?php echo htmlspecialchars($progress['subject_name']); ?></td>
                                             <td>
                                                 <div class="progress" style="height: 20px;">
-                                                    <div class="progress-bar bg-purple" style="width: <?php echo $completion; ?>%">
+                                                    <div class="mt-0 mb-0 progress-bar bg-purple" style="height: 20px; width: <?php echo $completion; ?>%">
                                                         <?php echo $completion; ?>%
                                                     </div>
                                                 </div>
@@ -372,7 +372,7 @@ if ($selected_user_id > 0) {
                                     <tbody>
                                         <?php foreach ($xp_history as $xp): ?>
                                         <tr>
-                                            <td><?php echo date('M d, Y H:i', strtotime($xp['transaction_date'])); ?></td>
+                                            <td><?php echo date('M d, Y H:i', strtotime($xp['created_at'])); ?></td>
                                             <td>
                                                 <span class="badge bg-info">
                                                     <?php echo htmlspecialchars($xp['xp_type']); ?>
