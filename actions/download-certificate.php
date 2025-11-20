@@ -3,7 +3,7 @@ require_once '../config/settings.php';
 require_once CONFIG_PATH . 'db.php';
 require_once INCLUDES_PATH . 'session.php';
 require_once INCLUDES_PATH . 'functions.php';
-require_once '../lib/fpdf.php';
+require_once LIB_PATH .'../lib/fpdf.php';
 
 require_login();
 

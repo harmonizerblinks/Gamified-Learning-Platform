@@ -49,6 +49,8 @@ foreach ($questions as &$question) {
     $stmt->execute([$question['question_id']]);
     $question['answers'] = $stmt->fetchAll();
 }
+unset($question);
+
 ?>
 
 <div class="container-fluid">

@@ -16,6 +16,7 @@ define('CONFIG_PATH', BASE_PATH . '/config/');
 define('INCLUDES_PATH', BASE_PATH . '/includes/');
 define('UPLOAD_PATH', BASE_PATH . '/uploads/');
 define('ASSETS_PATH', BASE_PATH . '/assets/');
+define('LIB_PATH', BASE_PATH . '/assets/');
 
 // Web URLs (relative to site root)
 define('UPLOAD_URL', '/uploads/');
