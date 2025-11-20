@@ -64,6 +64,38 @@ foreach ($all_lessons as $index => $l) {
 }
 $prev_lesson = $current_index > 0 ? $all_lessons[$current_index - 1] : null;
 $next_lesson = $current_index < count($all_lessons) - 1 ? $all_lessons[$current_index + 1] : null;
+
+// Helper function to convert YouTube URL to embed URL
+function get_youtube_embed_url($url) {
+    if (preg_match('/youtube\.com\/watch\?v=([^\&\?\/]+)/', $url, $id)) {
+        return 'https://www.youtube.com/embed/' . $id[1];
+    } elseif (preg_match('/youtube\.com\/embed\/([^\&\?\/]+)/', $url, $id)) {
+        return $url; // Already embed URL
+    } elseif (preg_match('/youtu\.be\/([^\&\?\/]+)/', $url, $id)) {
+        return 'https://www.youtube.com/embed/' . $id[1];
+    }
+    return false;
+}
+
+// Helper function to convert Vimeo URL to embed URL
+function get_vimeo_embed_url($url) {
+    if (preg_match('/vimeo\.com\/(\d+)/', $url, $id)) {
+        return 'https://player.vimeo.com/video/' . $id[1];
+    }
+    return false;
+}
+
+// Helper function to detect video type
+function get_video_type($url) {
+    if (strpos($url, 'youtube.com') !== false || strpos($url, 'youtu.be') !== false) {
+        return 'youtube';
+    } elseif (strpos($url, 'vimeo.com') !== false) {
+        return 'vimeo';
+    } elseif (preg_match('/\.(mp4|webm|ogg)$/i', $url)) {
+        return 'direct';
+    }
+    return 'unknown';
+}
 ?>
 
 <div class="container-fluid">
@@ -97,8 +129,11 @@ $next_lesson = $current_index < count($all_lessons) - 1 ? $all_lessons[$current_
                             <h2 class="mb-2"><?php echo htmlspecialchars($lesson['lesson_title']); ?></h2>
                             <div class="text-muted">
                                 <span class="me-3">
-                                    <i class="fas fa-<?php echo $lesson['lesson_type'] == 'video' ? 'play-circle' : 'file-alt'; ?> me-1"></i>
-                                    <?php echo ucfirst($lesson['lesson_type']); ?>
+                                    <i class="fas fa-<?php
+                                        echo ($lesson['lesson_type'] == 'video' || $lesson['lesson_type'] == 'external_url') ? 'play-circle' :
+                                             ($lesson['lesson_type'] == 'pdf' ? 'file-pdf' : 'file-alt');
+                                    ?> me-1"></i>
+                                    <?php echo $lesson['lesson_type'] == 'external_url' ? 'Video' : ucfirst($lesson['lesson_type']); ?>
                                 </span>
                                 <?php if ($lesson['duration']): ?>
                                     <span class="me-3">
@@ -125,13 +160,47 @@ $next_lesson = $current_index < count($all_lessons) - 1 ? $all_lessons[$current_
                 <div class="col-lg-8">
                     <div class="card border-0 shadow-sm mb-4">
                         <div class="card-body p-4">
-                            <?php if ($lesson['lesson_type'] == 'video' && $lesson['content_url']): ?>
+                            <?php if (($lesson['lesson_type'] == 'video' || $lesson['lesson_type'] == 'external_url') && $lesson['content_url']): ?>
                                 <!-- Video Player -->
                                 <div class="ratio ratio-16x9 mb-4">
-                                    <video controls class="rounded" id="lessonVideo">
-                                        <source src="<?php echo UPLOAD_URL; ?>videos/<?php echo $lesson['content_url']; ?>" type="video/mp4">
-                                        Your browser does not support the video tag.
-                                    </video>
+                                    <?php if ($lesson['lesson_type'] == 'external_url'): ?>
+                                        <?php
+                                        $video_type = get_video_type($lesson['content_url']);
+                                        if ($video_type == 'youtube'):
+                                            $embed_url = get_youtube_embed_url($lesson['content_url']);
+                                        ?>
+                                            <iframe src="<?php echo $embed_url; ?>"
+                                                    class="rounded"
+                                                    frameborder="0"
+                                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                                    allowfullscreen>
+                                            </iframe>
+                                        <?php elseif ($video_type == 'vimeo'):
+                                            $embed_url = get_vimeo_embed_url($lesson['content_url']);
+                                        ?>
+                                            <iframe src="<?php echo $embed_url; ?>"
+                                                    class="rounded"
+                                                    frameborder="0"
+                                                    allow="autoplay; fullscreen; picture-in-picture"
+                                                    allowfullscreen>
+                                            </iframe>
+                                        <?php elseif ($video_type == 'direct'): ?>
+                                            <video controls class="rounded" id="lessonVideo">
+                                                <source src="<?php echo htmlspecialchars($lesson['content_url']); ?>" type="video/mp4">
+                                                Your browser does not support the video tag.
+                                            </video>
+                                        <?php else: ?>
+                                            <div class="alert alert-warning">
+                                                <i class="fas fa-exclamation-triangle me-2"></i>
+                                                Unsupported video URL format. Please contact your instructor.
+                                            </div>
+                                        <?php endif; ?>
+                                    <?php else: ?>
+                                        <video controls class="rounded" id="lessonVideo">
+                                            <source src="<?php echo UPLOAD_URL; ?>videos/<?php echo $lesson['content_url']; ?>" type="video/mp4">
+                                            Your browser does not support the video tag.
+                                        </video>
+                                    <?php endif; ?>
                                 </div>
                             <?php endif; ?>
                             
