@@ -1,0 +1,30 @@
+# Composer
+/vendor/
+composer.lock
+
+# Environment
+.env
+.env.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+error_log
+
+# Temporary files
+/tmp/
+/temp/
+
+# Uploads (if sensitive)
+/uploads/*
+!/uploads/.gitkeep
