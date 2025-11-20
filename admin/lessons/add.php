@@ -25,6 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $content_text = isset($_POST['content_text']) ? $_POST['content_text'] : '';
     $duration = isset($_POST['duration']) ? (int)$_POST['duration'] : null;
     $xp_reward = isset($_POST['xp_reward']) ? (int)$_POST['xp_reward'] : 10;
+    $external_url = isset($_POST['external_url']) ? clean_input($_POST['external_url']) : '';
 
     // Validation
     if (empty($lesson_title)) {
@@ -33,13 +34,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($course_id <= 0) {
         $errors[] = 'Please select a valid course.';
     }
-    if (!in_array($lesson_type, ['video', 'text', 'pdf', 'mixed'])) {
+    if (!in_array($lesson_type, ['video', 'text', 'pdf', 'mixed', 'external_url'])) {
         $errors[] = 'Invalid lesson type.';
     }
 
-    // Handle file upload for video or PDF
+    // Handle external URL
     $content_url = '';
-    if (in_array($lesson_type, ['video', 'pdf', 'mixed']) && isset($_FILES['content_file']) && $_FILES['content_file']['error'] === UPLOAD_ERR_OK) {
+    if ($lesson_type === 'external_url') {
+        if (empty($external_url)) {
+            $errors[] = 'External URL is required for external URL lesson type.';
+        } elseif (!filter_var($external_url, FILTER_VALIDATE_URL)) {
+            $errors[] = 'Please enter a valid URL.';
+        } else {
+            $content_url = $external_url;
+        }
+    }
+    // Handle file upload for video or PDF
+    elseif (in_array($lesson_type, ['video', 'pdf', 'mixed']) && isset($_FILES['content_file']) && $_FILES['content_file']['error'] === UPLOAD_ERR_OK) {
         if ($lesson_type === 'video') {
             $uploaded = upload_file($_FILES['content_file'], UPLOAD_PATH . 'videos/', ALLOWED_VIDEO_EXT);
         } else {
@@ -163,10 +174,22 @@ $courses = $courses_stmt->fetchAll();
                                         <label for="lesson_type" class="form-label">Lesson Type <span class="text-danger">*</span></label>
                                         <select name="lesson_type" id="lesson_type" class="form-select" required onchange="toggleContentFields()">
                                             <option value="text" <?php echo (isset($_POST['lesson_type']) && $_POST['lesson_type'] == 'text') ? 'selected' : ''; ?>>Text</option>
-                                            <option value="video" <?php echo (isset($_POST['lesson_type']) && $_POST['lesson_type'] == 'video') ? 'selected' : ''; ?>>Video</option>
+                                            <option value="video" <?php echo (isset($_POST['lesson_type']) && $_POST['lesson_type'] == 'video') ? 'selected' : ''; ?>>Video Upload</option>
+                                            <option value="external_url" <?php echo (isset($_POST['lesson_type']) && $_POST['lesson_type'] == 'external_url') ? 'selected' : ''; ?>>External Video URL</option>
                                             <option value="pdf" <?php echo (isset($_POST['lesson_type']) && $_POST['lesson_type'] == 'pdf') ? 'selected' : ''; ?>>PDF</option>
                                             <option value="mixed" <?php echo (isset($_POST['lesson_type']) && $_POST['lesson_type'] == 'mixed') ? 'selected' : ''; ?>>Mixed</option>
                                         </select>
+                                    </div>
+
+                                    <!-- External URL (for external_url) -->
+                                    <div class="mb-3" id="external-url-section" style="display: none;">
+                                        <label for="external_url" class="form-label">External Video URL</label>
+                                        <input type="url" class="form-control" id="external_url" name="external_url"
+                                            value="<?php echo isset($_POST['external_url']) ? htmlspecialchars($_POST['external_url']) : ''; ?>"
+                                            placeholder="https://www.youtube.com/watch?v=...">
+                                        <small class="text-muted">
+                                            Supports: YouTube, Vimeo, direct video links (.mp4, .webm, .ogg)
+                                        </small>
                                     </div>
 
                                     <!-- File Upload (for video/pdf/mixed) -->
@@ -221,7 +244,8 @@ $courses = $courses_stmt->fetchAll();
                                 <ul class="small">
                                     <li>Choose lesson type based on your content format</li>
                                     <li><strong>Text:</strong> Written content only</li>
-                                    <li><strong>Video:</strong> Video file upload</li>
+                                    <li><strong>Video Upload:</strong> Upload video file from computer</li>
+                                    <li><strong>External Video URL:</strong> Link to YouTube, Vimeo, or direct video URL</li>
                                     <li><strong>PDF:</strong> PDF document upload</li>
                                     <li><strong>Mixed:</strong> Combination of text + file</li>
                                     <li>Set appropriate XP rewards based on lesson difficulty</li>
@@ -242,13 +266,20 @@ function toggleContentFields() {
     const lessonType = document.getElementById('lesson_type').value;
     const fileSection = document.getElementById('file-upload-section');
     const textSection = document.getElementById('text-content-section');
+    const externalUrlSection = document.getElementById('external-url-section');
+
+    // Reset all sections
+    fileSection.style.display = 'none';
+    textSection.style.display = 'none';
+    externalUrlSection.style.display = 'none';
 
     if (lessonType === 'text') {
-        fileSection.style.display = 'none';
         textSection.style.display = 'block';
     } else if (lessonType === 'video' || lessonType === 'pdf') {
         fileSection.style.display = 'block';
-        textSection.style.display = 'none';
+    } else if (lessonType === 'external_url') {
+        externalUrlSection.style.display = 'block';
+        textSection.style.display = 'block'; // Allow description text
     } else if (lessonType === 'mixed') {
         fileSection.style.display = 'block';
         textSection.style.display = 'block';
