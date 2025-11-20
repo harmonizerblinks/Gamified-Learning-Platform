@@ -345,6 +345,7 @@ $page_title = "Certificate - " . $certificate['course_title'];
             
             <div class="certificate-footer">
                 <div class="signature-block">
+                    <br/>
                     <div class="signature-line"><?php echo SITE_NAME; ?></div>
                     <div class="signature-label">Authorized Signature</div>
                     <div class="signature-label"><?php echo SITE_NAME; ?></div>
