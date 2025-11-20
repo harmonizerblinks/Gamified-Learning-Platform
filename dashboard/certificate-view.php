@@ -22,20 +22,33 @@ if ($certificate_id == 0) {
 }
 
 // Get certificate details
-$stmt = $conn->prepare("
-    SELECT c.*, co.course_title, co.course_id, s.subject_name, u.full_name
-    FROM certificates c
-    JOIN courses co ON c.course_id = co.course_id
-    JOIN subjects s ON co.subject_id = s.subject_id
-    JOIN users u ON c.user_id = u.user_id
-    WHERE c.certificate_id = ? AND c.user_id = ?
-");
-$stmt->execute([$certificate_id, $user_id]);
+// Allow admin to view any certificate, regular users can only view their own
+if (is_admin()) {
+    $stmt = $conn->prepare("
+        SELECT c.*, co.course_title, co.course_id, s.subject_name, u.full_name
+        FROM certificates c
+        JOIN courses co ON c.course_id = co.course_id
+        JOIN subjects s ON co.subject_id = s.subject_id
+        JOIN users u ON c.user_id = u.user_id
+        WHERE c.certificate_id = ?
+    ");
+    $stmt->execute([$certificate_id]);
+} else {
+    $stmt = $conn->prepare("
+        SELECT c.*, co.course_title, co.course_id, s.subject_name, u.full_name
+        FROM certificates c
+        JOIN courses co ON c.course_id = co.course_id
+        JOIN subjects s ON co.subject_id = s.subject_id
+        JOIN users u ON c.user_id = u.user_id
+        WHERE c.certificate_id = ? AND c.user_id = ?
+    ");
+    $stmt->execute([$certificate_id, $user_id]);
+}
 $certificate = $stmt->fetch();
 
 if (!$certificate) {
     set_error('Certificate not found');
-    redirect('/dashboard/certificates.php');
+    redirect(is_admin() ? '/admin/certificates/' : '/dashboard/certificates.php');
 }
 
 $page_title = "Certificate - " . $certificate['course_title'];
@@ -52,22 +65,32 @@ $page_title = "Certificate - " . $certificate['course_title'];
     <style>
         body {
             background: #f8f9fa;
+            margin: 0;
+            padding: 0;
         }
-        
+
         .certificate-container {
-            max-width: 1000px;
-            margin: 50px auto;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             padding: 20px;
+            box-sizing: border-box;
         }
-        
+
         .certificate {
             background: white;
-            padding: 60px;
-            border: 20px solid #8B5CF6;
+            /* Landscape A4 ratio: 297mm x 210mm = 1.414:1 */
+            width: 1100px;
+            max-width: 95vw;
+            aspect-ratio: 297 / 210;
+            padding: 40px 60px;
+            border: 15px solid #8B5CF6;
             border-radius: 10px;
             box-shadow: 0 10px 50px rgba(0, 0, 0, 0.2);
             position: relative;
             overflow: hidden;
+            box-sizing: border-box;
         }
         
         .certificate::before {
@@ -89,68 +112,68 @@ $page_title = "Certificate - " . $certificate['course_title'];
         
         .certificate-header {
             text-align: center;
-            margin-bottom: 40px;
+            margin-bottom: 20px;
             position: relative;
         }
-        
+
         .certificate-logo {
-            font-size: 4rem;
-            color: #8B5CF6;
-            margin-bottom: 20px;
-        }
-        
-        .certificate-title {
             font-size: 3rem;
+            color: #8B5CF6;
+            margin-bottom: 10px;
+        }
+
+        .certificate-title {
+            font-size: 2.5rem;
             font-weight: bold;
             color: #8B5CF6;
             text-transform: uppercase;
             letter-spacing: 3px;
-            margin-bottom: 10px;
+            margin-bottom: 5px;
         }
-        
+
         .certificate-subtitle {
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             color: #666;
             font-style: italic;
         }
         
         .certificate-body {
             text-align: center;
-            margin: 40px 0;
+            margin: 20px 0;
             position: relative;
         }
-        
+
         .certificate-text {
-            font-size: 1.2rem;
+            font-size: 1rem;
             color: #333;
-            line-height: 2;
-            margin-bottom: 30px;
+            line-height: 1.6;
+            margin-bottom: 15px;
         }
-        
+
         .recipient-name {
-            font-size: 3rem;
+            font-size: 2.2rem;
             font-weight: bold;
             color: #8B5CF6;
-            margin: 30px 0;
+            margin: 15px 0;
             text-decoration: underline;
             text-decoration-color: #8B5CF6;
             text-decoration-thickness: 3px;
-            text-underline-offset: 10px;
+            text-underline-offset: 8px;
         }
-        
+
         .course-name {
-            font-size: 2rem;
+            font-size: 1.6rem;
             font-weight: bold;
             color: #333;
-            margin: 30px 0;
+            margin: 15px 0;
         }
         
         .certificate-footer {
             display: flex;
             justify-content: space-between;
             align-items: flex-end;
-            margin-top: 60px;
-            padding-top: 40px;
+            margin-top: 30px;
+            padding-top: 20px;
             border-top: 2px solid #8B5CF6;
             position: relative;
         }
@@ -161,45 +184,45 @@ $page_title = "Certificate - " . $certificate['course_title'];
         }
         
         .signature-line {
-            width: 200px;
-            height: 60px;
+            width: 180px;
+            height: 50px;
             border-bottom: 2px solid #333;
-            margin: 0 auto 10px;
+            margin: 0 auto 8px;
             font-family: 'Brush Script MT', cursive;
-            font-size: 2rem;
+            font-size: 1.6rem;
             display: flex;
             align-items: flex-end;
             justify-content: center;
-            padding-bottom: 10px;
+            padding-bottom: 8px;
         }
-        
+
         .signature-label {
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             color: #666;
             font-weight: bold;
         }
-        
+
         .certificate-seal {
             position: absolute;
-            bottom: 40px;
-            right: 60px;
-            width: 120px;
-            height: 120px;
+            bottom: 20px;
+            right: 40px;
+            width: 90px;
+            height: 90px;
             border-radius: 50%;
             background: linear-gradient(135deg, #8B5CF6, #6366F1);
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            font-size: 2rem;
+            font-size: 1.5rem;
             box-shadow: 0 5px 20px rgba(139, 92, 246, 0.4);
-            border: 5px solid white;
+            border: 4px solid white;
         }
-        
+
         .certificate-code {
             text-align: center;
-            margin-top: 20px;
-            font-size: 0.9rem;
+            margin-top: 15px;
+            font-size: 0.75rem;
             color: #999;
         }
         
@@ -208,6 +231,44 @@ $page_title = "Certificate - " . $certificate['course_title'];
             margin: 30px 0;
         }
         
+        /* Responsive adjustments */
+        @media (max-width: 1200px) {
+            .certificate {
+                width: 900px;
+            }
+            .certificate-title {
+                font-size: 2rem;
+            }
+            .recipient-name {
+                font-size: 1.8rem;
+            }
+            .course-name {
+                font-size: 1.3rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .certificate {
+                width: 100%;
+                padding: 20px 30px;
+                border-width: 10px;
+            }
+            .certificate-title {
+                font-size: 1.5rem;
+            }
+            .recipient-name {
+                font-size: 1.3rem;
+            }
+            .course-name {
+                font-size: 1rem;
+            }
+            .certificate-seal {
+                width: 60px;
+                height: 60px;
+                font-size: 1rem;
+            }
+        }
+
         @media print {
             body {
                 background: white;
@@ -216,11 +277,16 @@ $page_title = "Certificate - " . $certificate['course_title'];
                 margin: 0;
                 padding: 0;
             }
+            .certificate {
+                width: 297mm;
+                height: 210mm;
+                max-width: none;
+            }
             .action-buttons, .back-button {
                 display: none !important;
             }
         }
-        
+
         @page {
             size: landscape;
             margin: 0;
@@ -231,7 +297,7 @@ $page_title = "Certificate - " . $certificate['course_title'];
     <div class="certificate-container">
         <!-- Action Buttons -->
         <div class="action-buttons">
-            <a href="/dashboard/certificates.php" class="btn btn-secondary back-button">
+            <a href="<?php echo is_admin() ? '/admin/certificates/' : '/dashboard/certificates.php'; ?>" class="btn btn-secondary back-button">
                 <i class="fas fa-arrow-left me-2"></i>Back to Certificates
             </a>
             <button onclick="window.print()" class="btn btn-primary">
@@ -279,6 +345,7 @@ $page_title = "Certificate - " . $certificate['course_title'];
             
             <div class="certificate-footer">
                 <div class="signature-block">
+                    <br/>
                     <div class="signature-line"><?php echo SITE_NAME; ?></div>
                     <div class="signature-label">Authorized Signature</div>
                     <div class="signature-label"><?php echo SITE_NAME; ?></div>
