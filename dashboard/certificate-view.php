@@ -22,20 +22,33 @@ if ($certificate_id == 0) {
 }
 
 // Get certificate details
-$stmt = $conn->prepare("
-    SELECT c.*, co.course_title, co.course_id, s.subject_name, u.full_name
-    FROM certificates c
-    JOIN courses co ON c.course_id = co.course_id
-    JOIN subjects s ON co.subject_id = s.subject_id
-    JOIN users u ON c.user_id = u.user_id
-    WHERE c.certificate_id = ? AND c.user_id = ?
-");
-$stmt->execute([$certificate_id, $user_id]);
+// Allow admin to view any certificate, regular users can only view their own
+if (is_admin()) {
+    $stmt = $conn->prepare("
+        SELECT c.*, co.course_title, co.course_id, s.subject_name, u.full_name
+        FROM certificates c
+        JOIN courses co ON c.course_id = co.course_id
+        JOIN subjects s ON co.subject_id = s.subject_id
+        JOIN users u ON c.user_id = u.user_id
+        WHERE c.certificate_id = ?
+    ");
+    $stmt->execute([$certificate_id]);
+} else {
+    $stmt = $conn->prepare("
+        SELECT c.*, co.course_title, co.course_id, s.subject_name, u.full_name
+        FROM certificates c
+        JOIN courses co ON c.course_id = co.course_id
+        JOIN subjects s ON co.subject_id = s.subject_id
+        JOIN users u ON c.user_id = u.user_id
+        WHERE c.certificate_id = ? AND c.user_id = ?
+    ");
+    $stmt->execute([$certificate_id, $user_id]);
+}
 $certificate = $stmt->fetch();
 
 if (!$certificate) {
     set_error('Certificate not found');
-    redirect('/dashboard/certificates.php');
+    redirect(is_admin() ? '/admin/certificates/' : '/dashboard/certificates.php');
 }
 
 $page_title = "Certificate - " . $certificate['course_title'];
@@ -231,7 +244,7 @@ $page_title = "Certificate - " . $certificate['course_title'];
     <div class="certificate-container">
         <!-- Action Buttons -->
         <div class="action-buttons">
-            <a href="/dashboard/certificates.php" class="btn btn-secondary back-button">
+            <a href="<?php echo is_admin() ? '/admin/certificates/' : '/dashboard/certificates.php'; ?>" class="btn btn-secondary back-button">
                 <i class="fas fa-arrow-left me-2"></i>Back to Certificates
             </a>
             <button onclick="window.print()" class="btn btn-primary">

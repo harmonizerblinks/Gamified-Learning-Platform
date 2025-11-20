@@ -188,12 +188,14 @@ $stats = $conn->query("
                                             </td>
                                             <td>
                                                 <div class="btn-group btn-group-sm" role="group">
-                                                    <?php if (!empty($cert['certificate_url'])): ?>
-                                                    <a href="<?php echo htmlspecialchars($cert['certificate_url']); ?>"
-                                                    target="_blank" class="btn btn-outline-success" title="View Certificate">
-                                                        <i class="fas fa-eye"></i> View
+                                                    <a href="/dashboard/certificate-view.php?id=<?php echo $cert['certificate_id']; ?>"
+                                                    target="_blank" class="btn btn-outline-info" title="View Certificate">
+                                                        <i class="fas fa-eye"></i>
                                                     </a>
-                                                    <?php endif; ?>
+                                                    <a href="/actions/download-certificate.php?id=<?php echo $cert['certificate_id']; ?>"
+                                                    class="btn btn-outline-success" title="Download Certificate PDF">
+                                                        <i class="fas fa-download"></i>
+                                                    </a>
                                                     <a href="/admin/users/view.php?id=<?php echo $cert['user_id']; ?>"
                                                     class="btn btn-outline-primary" title="View User">
                                                         <i class="fas fa-user"></i>
