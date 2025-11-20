@@ -117,98 +117,98 @@ $pdf->AddPage();
 // Draw borders
 $pdf->DrawBorder();
 
-// Logo/Icon area
-$pdf->SetFont('Arial', 'B', 48);
+// Logo/Icon area - Centered title
+$pdf->SetFont('Arial', 'B', 42);
 $pdf->SetTextColor(139, 92, 246);
-$pdf->SetXY(10, 25);
-$pdf->Cell(277, 20, 'CERTIFICATE', 0, 1, 'C');
+$pdf->SetXY(10, 20);
+$pdf->Cell(277, 15, 'CERTIFICATE', 0, 1, 'C');
 
 // Subtitle
-$pdf->SetFont('Arial', 'I', 20);
+$pdf->SetFont('Arial', 'I', 18);
 $pdf->SetTextColor(102, 102, 102);
-$pdf->SetXY(10, 48);
-$pdf->Cell(277, 10, 'of Completion', 0, 1, 'C');
+$pdf->SetXY(10, 38);
+$pdf->Cell(277, 8, 'of Completion', 0, 1, 'C');
 
 // Body text
-$pdf->SetFont('Arial', '', 14);
+$pdf->SetFont('Arial', '', 12);
 $pdf->SetTextColor(51, 51, 51);
-$pdf->SetXY(10, 70);
-$pdf->Cell(277, 8, 'This is to certify that', 0, 1, 'C');
+$pdf->SetXY(10, 55);
+$pdf->Cell(277, 6, 'This is to certify that', 0, 1, 'C');
 
 // Recipient name with underline
-$pdf->SetFont('Arial', 'B', 28);
+$pdf->SetFont('Arial', 'B', 26);
 $pdf->SetTextColor(139, 92, 246);
 $fullName = strtoupper($certificate['full_name']);
-$pdf->SetXY(10, 80);
-$pdf->Cell(277, 15, $fullName, 0, 1, 'C');
+$pdf->SetXY(10, 65);
+$pdf->Cell(277, 12, $fullName, 0, 1, 'C');
 
 // Draw line under name
 $pdf->SetDrawColor(139, 92, 246);
 $pdf->SetLineWidth(0.5);
 $nameWidth = $pdf->GetStringWidth($fullName);
 $nameX = (297 - $nameWidth) / 2;
-$pdf->Line($nameX, 96, $nameX + $nameWidth, 96);
+$pdf->Line($nameX, 78, $nameX + $nameWidth, 78);
 
 // Continue body text
-$pdf->SetFont('Arial', '', 14);
+$pdf->SetFont('Arial', '', 12);
 $pdf->SetTextColor(51, 51, 51);
-$pdf->SetXY(10, 105);
-$pdf->Cell(277, 8, 'has successfully completed the course', 0, 1, 'C');
+$pdf->SetXY(10, 87);
+$pdf->Cell(277, 6, 'has successfully completed the course', 0, 1, 'C');
 
 // Course name
-$pdf->SetFont('Arial', 'B', 22);
+$pdf->SetFont('Arial', 'B', 20);
 $pdf->SetTextColor(51, 51, 51);
-$pdf->SetXY(10, 118);
-$pdf->MultiCell(277, 10, $certificate['course_title'], 0, 'C');
+$pdf->SetXY(10, 98);
+$pdf->MultiCell(277, 8, $certificate['course_title'], 0, 'C');
 
 // Subject and date
-$pdf->SetFont('Arial', '', 12);
-$pdf->SetXY(10, 145);
+$pdf->SetFont('Arial', '', 11);
+$pdf->SetXY(10, 120);
 $issued_date = date('F d, Y', strtotime($certificate['issued_date']));
-$pdf->Cell(277, 6, 'in the field of ' . $certificate['subject_name'], 0, 1, 'C');
-$pdf->SetXY(10, 152);
-$pdf->Cell(277, 6, 'on ' . $issued_date, 0, 1, 'C');
+$pdf->Cell(277, 5, 'in the field of ' . $certificate['subject_name'], 0, 1, 'C');
+$pdf->SetXY(10, 127);
+$pdf->Cell(277, 5, 'on ' . $issued_date, 0, 1, 'C');
 
 // Footer line
 $pdf->SetDrawColor(139, 92, 246);
 $pdf->SetLineWidth(0.3);
-$pdf->Line(20, 168, 277, 168);
+$pdf->Line(20, 150, 277, 150);
 
 // Signature blocks
 // Left signature
-$pdf->SetFont('Arial', 'I', 16);
+$pdf->SetFont('Arial', 'I', 14);
 $pdf->SetTextColor(139, 92, 246);
-$pdf->SetXY(40, 172);
-$pdf->Cell(80, 8, SITE_NAME, 0, 0, 'C');
+$pdf->SetXY(40, 155);
+$pdf->Cell(80, 6, SITE_NAME, 0, 0, 'C');
 
-$pdf->SetFont('Arial', '', 9);
+$pdf->SetFont('Arial', '', 8);
 $pdf->SetTextColor(102, 102, 102);
-$pdf->SetXY(40, 180);
+$pdf->SetXY(40, 162);
 $pdf->Cell(80, 4, 'Authorized Signature', 0, 0, 'C');
-$pdf->SetXY(40, 184);
+$pdf->SetXY(40, 166);
 $pdf->Cell(80, 4, SITE_NAME, 0, 0, 'C');
 
 // Right signature (Date)
-$pdf->SetFont('Arial', '', 12);
+$pdf->SetFont('Arial', '', 11);
 $pdf->SetTextColor(51, 51, 51);
-$pdf->SetXY(177, 172);
-$pdf->Cell(80, 8, date('M d, Y', strtotime($certificate['issued_date'])), 0, 0, 'C');
+$pdf->SetXY(177, 155);
+$pdf->Cell(80, 6, date('M d, Y', strtotime($certificate['issued_date'])), 0, 0, 'C');
 
-$pdf->SetFont('Arial', '', 9);
+$pdf->SetFont('Arial', '', 8);
 $pdf->SetTextColor(102, 102, 102);
-$pdf->SetXY(177, 180);
+$pdf->SetXY(177, 162);
 $pdf->Cell(80, 4, 'Date of Completion', 0, 0, 'C');
 
 // Certificate code at bottom
-$pdf->SetFont('Arial', '', 8);
+$pdf->SetFont('Arial', '', 7);
 $pdf->SetTextColor(153, 153, 153);
-$pdf->SetXY(10, 193);
-$pdf->Cell(277, 4, 'Verification Code: ' . $certificate['certificate_code'], 0, 1, 'C');
-$pdf->SetXY(10, 197);
-$pdf->Cell(277, 4, 'Verify at: ' . SITE_URL . 'verify/' . $certificate['certificate_code'], 0, 1, 'C');
+$pdf->SetXY(10, 180);
+$pdf->Cell(277, 3, 'Verification Code: ' . $certificate['certificate_code'], 0, 1, 'C');
+$pdf->SetXY(10, 185);
+$pdf->Cell(277, 3, 'Verify at: ' . SITE_URL . 'verify/' . $certificate['certificate_code'], 0, 1, 'C');
 
 // Draw seal
-$pdf->DrawSeal(250, 165);
+$pdf->DrawSeal(255, 145);
 
 // Output PDF
 $filename = 'Certificate_' . preg_replace('/[^A-Za-z0-9_\-]/', '_', $certificate['full_name']) . '_' .
